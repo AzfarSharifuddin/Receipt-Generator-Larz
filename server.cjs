@@ -13,14 +13,19 @@ function makeSession(){const value=`${Date.now()+ttl}.${crypto.randomBytes(16).t
 function redirect(res,url){res.writeHead(303,{Location:url});res.end()}
 function cookie(req){return /(?:^|;\s*)larz_session=([0-9]+\.[a-f0-9]{32}\.[a-f0-9]{64})(?:;|$)/.exec(req.headers.cookie||'')?.[1]}
 function loggedIn(req){const token=cookie(req);if(!token)return false;const [expiry,nonce,mac]=token.split('.');return Number(expiry)>Date.now()&&crypto.timingSafeEqual(Buffer.from(mac,'hex'),Buffer.from(sign(`${expiry}.${nonce}`),'hex'))}const publicFiles={'/login':'login.html','/login.css':'login.css','/assets/larz-logo.png':'assets/larz-logo.png'};
-const privateFiles={'/':'index.html','/index.html':'index.html','/src/app.js':'src/app.js','/src/core.js':'src/core.js','/src/style.css':'src/style.css'};
+const privateFiles={'/src/pdf.js':'src/pdf.js','/assets/vendor/jspdf.umd.min.js':'assets/vendor/jspdf.umd.min.js','/':'index.html','/index.html':'index.html','/src/app.js':'src/app.js','/src/core.js':'src/core.js','/src/style.css':'src/style.css'};
 const server=http.createServer(async(req,res)=>{
  res.setHeader('Cache-Control','no-store');res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('X-Frame-Options','DENY');res.setHeader('Referrer-Policy','no-referrer');res.setHeader('Content-Security-Policy',"default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'");
- const url=new URL(req.url,'http://localhost');
+ let url;try{if(req.url.length>2048)return send(res,414,'URL too long');url=new URL(req.url,'http://localhost')}catch{return send(res,400,'Invalid URL')}
  if(req.method==='POST'){
   if(!['/login','/logout'].includes(url.pathname))return send(res,404,'Not found');
-  let body='';try{for await(const chunk of req){body+=chunk;if(body.length>4096)return send(res,413,'Request too large')}}catch{return send(res,400,'Invalid request')}
+  if(!(req.headers['content-type']||'').toLowerCase().startsWith('application/x-www-form-urlencoded'))return send(res,415,'Unsupported content type');
+  let body='',bytes=0;try{for await(const chunk of req){bytes+=Buffer.byteLength(chunk);if(bytes>4096)return send(res,413,'Request too large');body+=chunk}}catch{return send(res,400,'Invalid request')}
   const data=new URLSearchParams(body);
+  const allowed=url.pathname==='/login'?['username','password','csrf']:['csrf'];
+  if([...data.keys()].some(k=>!allowed.includes(k))||allowed.some(k=>data.getAll(k).length!==1))return send(res,400,'Invalid form fields');
+  if(!/^[a-f0-9]{64}$/.test(data.get('csrf')))return send(res,403,'Invalid form token');
+  if(url.pathname==='/login'&&(!/^[A-Za-z0-9_.@-]{1,128}$/.test(data.get('username'))||!data.get('password')||data.get('password').length>256||/[\x00-\x1f\x7f]/.test(data.get('password'))))return send(res,400,'Invalid login input');
   const csrfCookie=/(?:^|;\s*)larz_csrf=([a-f0-9]{64})(?:;|$)/.exec(req.headers.cookie||'')?.[1];
   if(!csrfCookie||data.get('csrf')!==csrfCookie)return send(res,403,'Your form expired. Return to /login and refresh the page.');
   if(url.pathname==='/logout'){res.setHeader('Set-Cookie','larz_session=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0');return redirect(res,'/login')}  const ip=process.env.VERCEL?(req.headers['x-forwarded-for']||req.socket.remoteAddress):req.socket.remoteAddress;let rate=attempts.get(ip);if(!rate||rate.until<Date.now()){rate={count:0,until:Date.now()+15*60*1000};attempts.set(ip,rate)}if(rate.count>=10)return send(res,429,'Too many attempts. Try again in 15 minutes.');rate.count++;
@@ -36,5 +41,6 @@ const server=http.createServer(async(req,res)=>{
 });
 if(require.main===module)server.listen(port,'127.0.0.1',()=>console.log(`Larz Studio: http://127.0.0.1:${port}`));
 module.exports=server;
+
 
 

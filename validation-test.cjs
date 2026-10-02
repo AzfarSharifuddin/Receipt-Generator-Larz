@@ -1,0 +1,6 @@
+const assert=require('node:assert/strict'),core=require('./src/core.js');
+const d={number:'I-1',customer:'Client',date:'2026-10-03',type:'invoice',currency:'MYR',items:[{description:'Service',qty:1,price:100}],discount:0,discountType:'fixed',tax:0,shipping:0,paid:0};
+for(const patch of [{date:'2026-02-30'},{tax:101},{paid:Infinity},{email:'bad-email'},{currency:'BAD'},{notes:'x'.repeat(5001)},{items:[{description:'x',qty:1,price:1e20}]}])assert.ok(core.validate({...d,...patch}).length);
+const business={name:'Test',address:'',phone:'',registration:'',payment:'',terms:'',email:'',currency:'MYR',logo:''};
+const full={...d,id:'safe-id',business,address:'',email:'',reference:'',method:'',paymentReference:'',notes:'',terms:'',payment:'',due:'',paymentDate:'2026-10-03'};
+const backup={version:1,business,documents:[full],draft:null};assert.ok(core.validBackup(backup));assert.equal(core.validBackup({...backup,documents:[{...full,id:'" onclick="alert(1)'}]}),false);assert.equal(core.validBusiness({...business,logo:'data:image/svg+xml;base64,PHN2Zz4='}),false);assert.equal(core.validBusiness({...business,logo:'data:image/png;base64,YmFk'}),false);console.log('Validation regression checks passed.');

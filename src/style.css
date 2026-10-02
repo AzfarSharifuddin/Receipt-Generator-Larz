@@ -36,3 +36,9 @@
 /* Keep document creation beside the document-type selector. */
 .toolbar{justify-content:flex-start;flex-wrap:wrap}
 @media(max-width:650px){.toolbar{flex-direction:row;align-items:center;gap:10px}.toolbar .segmented{flex:1}.toolbar #new-doc{flex-shrink:0}}
+/* Keep account access at the top-right of the app header on every screen. */
+.app-header{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:16px}
+.app-header .header-actions{display:flex;width:auto;margin:8px 0 0;justify-content:flex-end}
+.sign-out-form{margin:0}
+.sign-out-form button{white-space:nowrap}
+@media(max-width:650px){.app-header h1{font-size:21px}.app-header .header-actions{margin-top:6px}}

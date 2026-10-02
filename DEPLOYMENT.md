@@ -21,3 +21,5 @@ Run `npm start`; the local server reads `.auth.json`. Run `npm test` for calcula
 ## Deployment status
 
 Configuration and local tests are prepared. An actual Vercel deployment and hosted smoke test are still required.
+
+Input validation rejects unexpected/duplicate login fields, non-form payloads, oversized requests and credentials, invalid numeric ranges, unsupported currencies, impossible dates, malformed emails, unsafe import IDs, and unsupported logo data. Backups are limited to 2,000 documents and 200 items each; text fields have size limits. Browser validation protects local workflows; invoice data is not submitted to a server. Keep the shared Vercel Firewall login rate limit configured as described above.
