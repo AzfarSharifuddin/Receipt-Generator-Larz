@@ -1,0 +1,1 @@
+{"name":"larz-receipt-generator","version":"1.0.0","private":true,"engines":{"node":"24.x"},"scripts":{"start":"node server.cjs","test":"node test.cjs && node auth-test.cjs"}}

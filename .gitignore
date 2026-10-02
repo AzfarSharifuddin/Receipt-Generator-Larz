@@ -1,0 +1,6 @@
+.env
+.env.*
+!.env.example
+.auth.json
+node_modules/
+.vercel/

@@ -1,0 +1,11 @@
+const assert=require('node:assert/strict');
+const {totals,validate}=require('./src/core.js');
+const base={number:'INV-2026-001',customer:'Example',date:'2026-10-02',type:'invoice',items:[{description:'Service',qty:3,price:0.1}],discount:0,discountType:'fixed',tax:0,shipping:0,paid:0};
+assert.equal(totals(base).total,30,'Decimal prices must round correctly');
+const discounted={...base,items:[{description:'Work',qty:2,price:100}],discountType:'percent',discount:10,tax:6,shipping:5,paid:100};
+assert.deepEqual(totals(discounted),{subtotal:20000,discount:2000,tax:1080,total:19580,paid:10000,balance:9580});
+assert.equal(totals({...base,discount:100}).total,0,'Fixed discounts cannot make the subtotal negative');
+assert.ok(validate({...base,type:'receipt',paymentDate:'2026-10-02',paid:0}).length,'Unpaid receipts must be rejected');
+assert.ok(validate({...base,items:[{description:'Invalid',qty:-1,price:10}]}).length);
+assert.equal(validate(base).length,0);
+console.log('6 calculation and validation checks passed');
