@@ -19,7 +19,7 @@ Use Refresh to see colleagues' stock changes. Validation always uses current dat
 
 ## Existing data
 
-Local drafts and records are retained. Existing local documents appear with an Upload historical record action: this uploads a read-only historical record and never deducts stock. Set your actual current opening stock separately. Save Business settings once to share your local business details. Browser backup import/export covers documents and settings, not the inventory database; inventory requires Supabase backups.
+Local drafts and records are retained. Existing local documents appear with an Upload historical record action: this uploads a read-only historical record and never deducts stock. Set your actual current opening stock separately. Save Business settings once to share your local business details. Backup management is handled separately through Supabase; the app no longer has browser backup import/export controls.
 
 ## Security and storage
 
