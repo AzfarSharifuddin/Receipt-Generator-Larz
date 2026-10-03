@@ -46,3 +46,9 @@
 /* Account action follows backup controls in the sidebar. */
 .local-note .sign-out-form{display:block;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
 .local-note .sign-out-form button{display:block;width:100%;margin:0;padding:10px 12px;text-align:left;color:#595959;font-size:12px}
+/* Inventory supplies prices; document entry only needs product and quantity. */
+.item-row{grid-template-columns:minmax(0,1fr) 75px 26px}
+.history-controls{display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap}
+.history-controls #search{width:280px;max-width:100%}
+.history-sort{min-width:155px}.history-sort label{margin-bottom:5px}
+@media(max-width:650px){.history-controls{width:100%}.history-controls #search{width:100%;max-width:none}.history-sort{width:100%}}
