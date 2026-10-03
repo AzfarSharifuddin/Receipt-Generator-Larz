@@ -42,3 +42,4 @@
 .sign-out-form{margin:0}
 .sign-out-form button{white-space:nowrap}
 @media(max-width:650px){.app-header h1{font-size:21px}.app-header .header-actions{margin-top:6px}}
+.stock-count{display:inline-block;margin-top:9px;font-size:13px;font-weight:600;color:#294bb8}.low-stock{color:#a25a12}.movement-row{display:grid;grid-template-columns:1fr 70px 2fr 1fr;gap:12px;padding:14px 0;border-bottom:1px solid #ddd;font-size:12px}#product-search{max-width:420px;margin:16px 0}#product-form{margin:12px 0}#product-form input[type=checkbox]{width:auto;margin-right:8px}.item-row select{min-width:0;font-size:12px;padding:8px}#inventory h2{font-size:18px;margin-top:28px}@media(max-width:650px){.movement-row{grid-template-columns:1fr 60px}.sidebar nav{flex-wrap:wrap}}

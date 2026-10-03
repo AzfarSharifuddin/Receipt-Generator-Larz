@@ -1,25 +1,18 @@
-# Deploy to Vercel
+# Vercel deployment — Supabase edition
 
-This repository routes all requests through a Node function. Do not deploy index.html as a static-only site.
+1. Commit and push application code, package.json, supabase-ca.crt, lib/, src/cloud.js, and the updated vercel.json. Never commit .env files, .auth.json, or node_modules.
+2. In Vercel project settings, add/update these server-only environment variables from the ignored .env.vercel.local file:
+   - SUPABASE_URL
+   - SUPABASE_SECRET_KEY
+   - DATABASE_URL
+3. The previous AUTH_USERNAME, AUTH_PASSWORD_SALT, AUTH_PASSWORD_HASH, and SESSION_SECRET variables are no longer used and can be removed.
+4. Redeploy. The existing Other preset and vercel.json route all requests through the Node function. The certificate and lib files are bundled. PostgreSQL uses TLS verification, a single connection per instance, and disabled prepared statements for transaction pooling.
+5. Test sign-in, inventory loading, a product/draft, PDF export, and sign-out at the deployed HTTPS URL. The current production inventory must not be adjusted merely to test deployment.
 
-1. Push the repository to a private GitHub repository. `.auth.json` and `.env.vercel.local` must remain untracked.
-2. In Vercel, choose Add New Project and import the repository. Choose framework preset Other and leave build/output overrides unset. `vercel.json` explicitly configures the Node function and its bundled UI files.
-3. In the project's Environment Variables, add the four values from your local `.env.vercel.local`: AUTH_USERNAME, AUTH_PASSWORD_SALT, AUTH_PASSWORD_HASH, SESSION_SECRET. Add them to Production, and Preview only if you want preview deployments to work. Never use PUBLIC or NEXT_PUBLIC prefixes.
-4. Deploy. Test the HTTPS URL: unauthenticated visits must show the login page; sign in, create a test document, print, and sign out.
-5. Verify `/.auth.json`, `/.env.vercel.local`, and `/server.cjs` return 404. Verify `/src/app.js` redirects to login when signed out.
+The Supabase tables and initial member account have already been created. Production and Preview deployments using these same variables share the SAME database; use a separate Supabase project for isolated preview testing.
 
-The local environment file contains the existing login configuration and a randomly generated session secret. It is ignored by both Git and Vercel upload rules. Enter its values using Vercel's private environment settings; do not commit or share the file.
+Passwords are managed by Supabase Auth. Existing app users are not automatically workspace members: add trusted Supabase user IDs to larz.members using an admin database connection. There is one shared workspace and one permissions level in this version. The original shared login ID is retired.
 
-Sessions use signed HttpOnly, SameSite cookies and expire after eight hours. Vercel cookies are Secure. Logging out clears the browser cookie; stateless sessions cannot revoke a previously copied cookie individually. Rotate SESSION_SECRET and redeploy to invalidate all sessions. Login throttling in the function is best-effort per instance: configure a shared login rate limit in Vercel Firewall before sharing publicly.
+Login requests use Supabase Auth plus a best-effort per-instance limiter. Configure Vercel Firewall login rate limits before broad public sharing. Database migrations/admin maintenance currently use the supplied database account; retain its connection string only in private server settings.
 
-There is no shared invoice database. Each browser retains its own settings, drafts, numbering, and documents. Export a backup from localhost and import it on the deployed URL to transfer your data. Sharing login credentials does not synchronize documents.
-
-## Local use
-
-Run `npm start`; the local server reads `.auth.json`. Run `npm test` for calculation and authentication checks. Environment variables take precedence over the local credentials file.
-
-## Deployment status
-
-Configuration and local tests are prepared. An actual Vercel deployment and hosted smoke test are still required.
-
-Input validation rejects unexpected/duplicate login fields, non-form payloads, oversized requests and credentials, invalid numeric ranges, unsupported currencies, impossible dates, malformed emails, unsafe import IDs, and unsupported logo data. Backups are limited to 2,000 documents and 200 items each; text fields have size limits. Browser validation protects local workflows; invoice data is not submitted to a server. Keep the shared Vercel Firewall login rate limit configured as described above.
+Deployment has not been performed by this chat. Local browser login and live database stock tests have passed.

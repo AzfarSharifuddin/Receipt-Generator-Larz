@@ -1,0 +1,1 @@
+require('../lib/config.cjs');const fs=require('node:fs'),db=require('../lib/database.cjs')();(async()=>{try{await db.unsafe(fs.readFileSync(require('node:path').join(__dirname,'../supabase/001-inventory.sql'),'utf8'));console.log('Inventory schema applied.')}finally{await db.end()}})().catch(e=>{console.error('Migration failed:',e.code||e.message);process.exitCode=1});
