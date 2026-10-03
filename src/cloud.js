@@ -6,7 +6,16 @@ async function operation(action,payload){return api(action,{...payload,operation
 const originalRender=render;
 render=function(){originalRender();$('#number').readOnly=true;$('#document-form').querySelectorAll('[data-key=qty]').forEach(el=>{el.min='1';el.step='1'});$('#number').title='Assigned centrally when saved';const locked=['cancelled','legacy'].includes(doc.status);$('#document-form').querySelectorAll('input,textarea,select,button').forEach(el=>{if(locked)el.disabled=true});doc.items.forEach((item,n)=>{const input=$(`[data-index="${n}"][data-key="description"]`);if(!input)return;const select=document.createElement('select');select.dataset.productIndex=n;select.setAttribute('aria-label',`Item ${n+1} product`);select.innerHTML='<option value="">Select product…</option>'+cloud.products.filter(p=>p.active||p.id===item.productId).map(p=>`<option value="${esc(p.id)}" ${p.id===item.productId?'selected':''}>${esc(p.name)} · ${esc(p.sku)} (${p.stock} available)</option>`).join('');if(item.description&&!item.productId)select.options[0].textContent=item.description+' — choose product';select.disabled=locked||!!doc.sourceInvoice;input.replaceWith(select)});$('#confirm-sale').hidden=doc.status==='confirmed'||locked||!!doc.sourceInvoice;$('#cancel-sale').hidden=!doc.revision||locked;$('#save-doc').disabled=locked;$('#print').disabled=doc.status==='cancelled';$('#save-status').textContent=doc.status?doc.status[0].toUpperCase()+doc.status.slice(1):'Draft';};
 $('#document-form').addEventListener('input',e=>{if(e.target.dataset.productIndex!==undefined)e.stopImmediatePropagation()},true);
-$('#document-form').addEventListener('change',e=>{const n=e.target.dataset.productIndex;if(n===undefined)return;const p=cloud.products.find(p=>p.id===e.target.value);doc.items[n]=p?{productId:p.id,description:p.name,qty:doc.items[n].qty||1,price:doc.currency==='MYR'?p.price_myr:p.price_usd}:{description:'',qty:1,price:0};draft()});
+$('#document-form').addEventListener('change',e=>{
+ if(e.target.name==='currency'){
+  if(!doc.sourceInvoice){for(const item of doc.items){const product=cloud.products.find(p=>p.id===item.productId);if(product)item.price=doc.currency==='MYR'?product.price_myr:product.price_usd}}
+  render();draft();return;
+ }
+ const n=e.target.dataset.productIndex;if(n===undefined)return;
+ const product=cloud.products.find(p=>p.id===e.target.value);
+ doc.items[n]=product?{productId:product.id,description:product.name,qty:Number(doc.items[n].qty)>0?Number(doc.items[n].qty):1,price:doc.currency==='MYR'?product.price_myr:product.price_usd}:{description:'',qty:1,price:0};
+ render();draft();
+});
 save=async function(action='document'){if(doc.status==='legacy')return true;if(doc.status==='cancelled')return false;if(!cloudReady){toast('Connecting to workspace. Try again shortly.');return false}const errors=InvoiceCore.validate(doc);if(errors.length){toast(errors[0]);return false}try{const result=await operation(action,{document:doc});doc=result.document;db.draft=doc;await refreshCloud();persist();render();return true}catch(e){toast(e.message);return false}};
 $('#confirm-sale').onclick=async()=>{if(!confirm('Confirm this sale and deduct stock?'))return;const b=$('#confirm-sale');b.disabled=true;try{if(await save('confirm'))toast('Sale confirmed. Stock updated.')}finally{b.disabled=false}};
 $('#cancel-sale').onclick=async()=>{if(confirm('Cancel this document? Stock deducted by this sale will be restored.'))if(await save('cancel'))toast('Document cancelled. Stock updated.')};
