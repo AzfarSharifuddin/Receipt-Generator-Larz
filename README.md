@@ -32,3 +32,11 @@ Supabase Auth verifies credentials. Only users listed in `larz.members` can acce
 `npm run migrate`: applies the idempotent schema migration. The current Supabase project has already been migrated.
 
 See DEPLOYMENT.md for Vercel configuration.
+
+## Delete and product photos
+
+Inventory and Saved documents now have Delete actions with confirmation. Deletion hides records and retains their database history. Deleting a confirmed standalone sale restores deducted stock once; linked receipts do not restore stock. Delete linked receipts before deleting their invoice. Historical/cancelled/draft document deletion does not adjust stock. Deleted products are unavailable for new sales; old document snapshots and movement history remain intact.
+
+Add/edit a product to upload, replace, or remove its reference photo. PNG, JPEG and WebP inputs up to 5 MB are decoded and resized to a maximum 320 px JPEG thumbnail, with a server-side size/signature check. Thumbnails are stored privately in Supabase and shown only in inventory and product selection, never on invoice/receipt previews or PDFs. No public image bucket is used.
+
+Migration 002-delete-images.sql has been applied to the connected Supabase project. Redeploy updated code to Vercel; no new environment variables are required.

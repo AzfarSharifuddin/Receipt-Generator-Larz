@@ -52,3 +52,4 @@
 .history-controls #search{width:280px;max-width:100%}
 .history-sort{min-width:155px}.history-sort label{margin-bottom:5px}
 @media(max-width:650px){.history-controls{width:100%}.history-controls #search{width:100%;max-width:none}.history-sort{width:100%}}
+.product-summary,.product-choice{display:flex;align-items:center;gap:12px;min-width:0}.product-choice select{flex:1;min-width:0}.product-thumb{width:56px;height:56px;object-fit:contain;border:1px solid #e2e2e2;border-radius:8px;background:#fff;flex-shrink:0}.product-choice .product-thumb{width:38px;height:38px}.product-preview-image{max-width:160px;max-height:160px;object-fit:contain;margin:12px 0;border-radius:8px}.saved-actions .danger{color:#a32929}.saved-actions .danger:hover{background:#fff0f0}
