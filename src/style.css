@@ -27,7 +27,7 @@
   .sidebar .local-note .sign-out-form button{background:transparent;border-color:#716252;color:#f7f3e9;border-radius:9px}
   .sidebar .local-note .sign-out-form button:hover{background:#493c31}
   .dot{background:#b6c6a5}
-  h1{font-weight:600;letter-spacing:-.8px}
+  .app-header #page-title{font-family:Inter,"Segoe UI",Arial,sans-serif;font-size:46px;font-weight:450;letter-spacing:-2px;line-height:1.15}
   button{border-radius:9px;transition:background-color .15s,border-color .15s}
   button:hover{filter:none;background-color:#e8e5dc}
   .primary{background:#536448;color:#fffefa}
@@ -79,3 +79,6 @@
 .history-sort{min-width:155px}.history-sort label{margin-bottom:5px}
 @media(max-width:650px){.history-controls{width:100%}.history-controls #search{width:100%;max-width:none}.history-sort{width:100%}}
 .product-summary,.product-choice{display:flex;align-items:center;gap:12px;min-width:0}.product-choice select{flex:1;min-width:0}.product-thumb{width:56px;height:56px;object-fit:contain;border:1px solid #e2e2e2;border-radius:8px;background:#fff;flex-shrink:0}.product-choice .product-thumb{width:38px;height:38px}.product-preview-image{max-width:160px;max-height:160px;object-fit:contain;margin:12px 0;border-radius:8px}.saved-actions .danger{color:#a32929}.saved-actions .danger:hover{background:#fff0f0}
+
+/* Match the login heading on compact screens without crowding the workspace. */
+@media(max-width:700px){.app-header #page-title{font-size:36px}}
