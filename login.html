@@ -1,1 +1,34 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sign in · Larz</title><link rel="stylesheet" href="/login.css"></head><body><main><div class="brand"><img src="/assets/larz-logo.png" alt="LARZ"></div><h1>Sign in</h1><p>Access your invoice and receipt workspace.</p><!--ERROR--><form method="post" action="/login"><label for="username">Email</label><input id="username" name="username" type="email" maxlength="254" placeholder="you@example.com" autocomplete="username" required autofocus><label for="password">Password</label><input id="password" name="password" maxlength="256" type="password" autocomplete="current-password" required><button type="submit">Sign in</button></form></main></body></html>
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sign in · LARZ</title><link rel="stylesheet" href="/login.css"></head>
+<body>
+<main class="login-shell">
+<section class="story" aria-labelledby="story-title">
+ <div class="story-label"><span class="brand-mark" aria-hidden="true">✳</span> LARZ BUSINESS WORKSPACE</div>
+ <div class="story-copy"><h1 id="story-title">Automate<br>your <em>business.</em></h1></div>
+ <svg class="business-art" viewBox="0 0 600 390" fill="none" role="img" aria-label="Illustration of an invoice, inventory boxes, and a completed order">
+ <defs><linearGradient id="paper" x1="210" y1="40" x2="440" y2="330" gradientUnits="userSpaceOnUse"><stop stop-color="#FFFDF7"/><stop offset="1" stop-color="#D9D7C8"/></linearGradient><linearGradient id="box" x1="70" y1="210" x2="235" y2="360" gradientUnits="userSpaceOnUse"><stop stop-color="#B99876"/><stop offset="1" stop-color="#80634D"/></linearGradient><filter id="shadow" x="-50%" y="-50%" width="200%" height="220%"><feDropShadow dx="0" dy="18" stdDeviation="16" flood-color="#100D0B" flood-opacity=".32"/></filter></defs>
+ <ellipse cx="307" cy="344" rx="215" ry="28" fill="#191410" opacity=".3"/>
+ <circle cx="295" cy="184" r="173" stroke="#B7AB96" stroke-opacity=".12"/><circle cx="295" cy="184" r="138" stroke="#B7AB96" stroke-opacity=".08"/>
+ <path d="M97 176H161M440 124H492M449 258H497" stroke="#B6C6A5" stroke-opacity=".4" stroke-dasharray="4 7"/>
+ <g transform="rotate(9 335 182)" filter="url(#shadow)"><rect x="220" y="34" width="216" height="282" rx="17" fill="url(#paper)"/><rect x="238" y="52" width="180" height="244" rx="9" stroke="#D4D1C3"/><text x="253" y="88" fill="#312A24" font-family="Arial,sans-serif" font-size="15" font-weight="700" letter-spacing="2">INVOICE</text><circle cx="393" cy="81" r="12" fill="#DDE4D4"/><path d="m387 81 4 4 7-8" stroke="#526349" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M253 112H323M253 126H297" stroke="#B3B3A4" stroke-width="5" stroke-linecap="round"/><path d="M253 151H401" stroke="#C7C8BA"/><rect x="252" y="166" width="25" height="25" rx="5" fill="#DFDECE"/><path d="M288 172H349M288 184H324" stroke="#B3B3A4" stroke-width="4" stroke-linecap="round"/><rect x="252" y="205" width="25" height="25" rx="5" fill="#DFDECE"/><path d="M288 211H349M288 223H324" stroke="#B3B3A4" stroke-width="4" stroke-linecap="round"/><path d="M253 245H401" stroke="#C7C8BA"/><text x="253" y="272" fill="#747567" font-size="9" font-family="Arial,sans-serif" letter-spacing="1">ALL TAKEN CARE OF</text></g>
+ <g filter="url(#shadow)"><path d="m89 237 94-42 94 43-93 45Z" fill="#CFB593"/><path d="m89 237 95 46v86l-95-47Z" fill="url(#box)"/><path d="m184 283 93-45v85l-93 46Z" fill="#8C735B"/><path d="m125 221 94 45 20-9-95-44Z" fill="#E8D9BD"/><path d="m219 266 20-9v36l-20 10Z" fill="#C7B89A"/><path d="m107 297 30 15v17l-30-15Z" fill="#D9C8AA" opacity=".7"/></g>
+ <g transform="rotate(-7 170 172)" filter="url(#shadow)"><rect x="61" y="119" width="190" height="72" rx="15" fill="#F4F1E7"/><rect x="78" y="135" width="40" height="40" rx="12" fill="#E1E8D8"/><path d="m89 151 9-5 9 5v10l-9 5-9-5Z M89 151l9 5 9-5M98 156v10" stroke="#637656" stroke-width="1.6" stroke-linejoin="round"/><text x="131" y="148" fill="#7D8071" font-family="Arial,sans-serif" font-size="9" letter-spacing="1">INVENTORY</text><text x="131" y="167" fill="#343A2E" font-family="Arial,sans-serif" font-size="14" font-weight="600">Everything in order</text></g>
+ <g transform="rotate(-5 423 284)" filter="url(#shadow)"><rect x="346" y="267" width="190" height="59" rx="30" fill="#B6C6A5"/><circle cx="375" cy="296" r="16" fill="#3A4931"/><path d="m368 296 5 5 9-10" stroke="#ECF1E6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><text x="400" y="301" fill="#34412D" font-family="Arial,sans-serif" font-size="14" font-weight="600">One step ahead.</text></g>
+ </svg>
+ 
+</section>
+<section class="login-panel" aria-labelledby="login-title">
+ <a class="brand" href="/login" aria-label="LARZ home"><img src="/assets/larz-logo.png" alt="LARZ"></a>
+ <div class="form-wrap"><span class="welcome">WELCOME BACK</span><h2 id="login-title">Sign in.</h2>
+ <!--ERROR-->
+ <form method="post" action="/login">
+ <label for="username">Email address</label><input id="username" name="username" type="email" maxlength="254" placeholder="you@example.com" autocomplete="username" required>
+ <label for="password">Password</label><input id="password" name="password" type="password" maxlength="256" placeholder="Enter your password" autocomplete="current-password" required>
+ <button type="submit">Sign in</button>
+ </form>
+ </div>
+ <footer>LARZ <span>Make room for what’s next.</span></footer>
+</section>
+</main>
+</body></html>

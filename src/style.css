@@ -12,27 +12,53 @@
 .issue-date{grid-column:2;grid-row:2;white-space:nowrap}
 .business-registration{grid-column:1;grid-row:3}
 
-/* Interface accents only; document styles remain monochrome. */
+/* Workspace theme. Document preview and PDF retain their monochrome styling. */
 @media screen {
-  :root{background:#f4f6fa;--accent:#345bd6}
-  nav button.active{background:#edf2ff;color:#294bb8}
-  nav button:hover{background:#f0f3fa}
-  .primary{background:#345bd6;color:#fff}
-  .primary:hover{background:#294bb8}
-  .secondary:hover{background:#f0f4ff;border-color:#c5d2f5}
-  .segmented{background:#e9edf5}
-  .segmented .active{color:#294bb8}
-  .business-summary{background:#f2f5fc}
-  .business-summary button{color:#294bb8}
-  .quick button{background:#edf2ff;color:#294bb8}
-  .add-item{border-color:#b5c5ef;color:#294bb8}
-  .add-item:hover{background:#f2f5ff}
-  input:focus,textarea:focus,select:focus{border-color:#5375dd;box-shadow:0 0 0 3px #345bd618}
-  button:focus-visible{outline-color:#5375dd}
-  .dot{background:#345bd6}
-  .local-note button,.local-note .import{color:#294bb8}
-  #toast{background:#263e88}
+  :root{background:#f3f0e9;color:#302923;--accent:#536448;--muted:#746e63;--line:#ded9ce}
+  .sidebar{background:#30251f;border-right:0;color:#f7f3e9}
+  .sidebar .brand img{filter:invert(1);mix-blend-mode:screen}
+  .sidebar nav button{color:#d9d0c3;border-radius:10px;min-height:42px}
+  .sidebar nav button.active{background:#b6c6a5;color:#293322}
+  .sidebar nav button:hover{background:#493c31;color:#fffefa}
+  .sidebar nav button.active:hover{background:#c1ceb3;color:#293322}
+  .sidebar .local-note{color:#d0c7b9}
+  .sidebar .local-note p{color:#b9ae9e}
+  .sidebar .local-note .sign-out-form{border-color:#57493c}
+  .sidebar .local-note .sign-out-form button{background:transparent;border-color:#716252;color:#f7f3e9;border-radius:9px}
+  .sidebar .local-note .sign-out-form button:hover{background:#493c31}
+  .dot{background:#b6c6a5}
+  h1{font-weight:600;letter-spacing:-.8px}
+  button{border-radius:9px;transition:background-color .15s,border-color .15s}
+  button:hover{filter:none;background-color:#e8e5dc}
+  .primary{background:#536448;color:#fffefa}
+  .primary:hover{background:#415137}
+  .secondary{background:#fffefa;border-color:#ded9ce;color:#453b30}
+  .secondary:hover{background:#eeeee4;border-color:#a7b397}
+  .segmented{background:#e5e2d8;border-radius:11px}
+  .segmented .active{background:#fffefa;color:#415137;box-shadow:0 2px 5px #30251f0d}
+  .editor-card,.settings-card,.saved-row{background:#fffefa;border-color:#ded9ce;border-radius:14px;box-shadow:0 3px 14px #30251f04}
+  .form-section{border-bottom-color:#e9e4da}
+  label{color:#62594d}
+  input,textarea,select{background:#fffefa;color:#302923;border-color:#dcd6ca;border-radius:8px}
+  input:focus,textarea:focus,select:focus{border-color:#7d8d6d;box-shadow:0 0 0 3px #a8b89626}
+  input[type=checkbox]{accent-color:#536448}
+  button:focus-visible{outline-color:#a7b893}
+  .business-summary{background:#f0eee5;border-radius:10px;color:#453b30}
+  .business-summary button{color:#415137}
+  .quick button{background:#e9eedf;color:#415137}
+  .quick button:hover{background:#dce5cf}
+  .add-item{border-color:#a7b397;color:#415137;border-radius:9px}
+  .add-item:hover{background:#edf0e6}
+  .preview-label,.section-heading,.section-title span,.item-head,#save-status{color:#746e63}
+  .stock-count{color:#415137}
+  .stock-count.low-stock,.low-stock{color:#965519}
+  .movement-row{border-bottom-color:#ded9ce;color:#62594d}
+  .product-thumb{border-color:#ded9ce}
+  .saved-actions .danger{color:#a32929}
+  .saved-actions .danger:hover{background:#faeae5}
+  #toast{background:#30251f;color:#fffefa;border:1px solid #57493c;box-shadow:0 6px 24px #30251f20}
 }
+@media(prefers-reduced-motion:reduce){button{transition:none}}
 /* Keep document creation beside the document-type selector. */
 .toolbar{justify-content:flex-start;flex-wrap:wrap}
 @media(max-width:650px){.toolbar{flex-direction:row;align-items:center;gap:10px}.toolbar .segmented{flex:1}.toolbar #new-doc{flex-shrink:0}}
@@ -42,7 +68,7 @@
 .sign-out-form{margin:0}
 .sign-out-form button{white-space:nowrap}
 @media(max-width:650px){.app-header h1{font-size:21px}.app-header .header-actions{margin-top:6px}}
-.stock-count{display:inline-block;margin-top:9px;font-size:13px;font-weight:600;color:#294bb8}.low-stock{color:#a25a12}.movement-row{display:grid;grid-template-columns:1fr 70px 2fr 1fr;gap:12px;padding:14px 0;border-bottom:1px solid #ddd;font-size:12px}#product-search{max-width:420px;margin:16px 0}#product-form{margin:12px 0}#product-form input[type=checkbox]{width:auto;margin-right:8px}.item-row select{min-width:0;font-size:12px;padding:8px}#inventory h2{font-size:18px;margin-top:28px}@media(max-width:650px){.movement-row{grid-template-columns:1fr 60px}.sidebar nav{flex-wrap:wrap}}
+.stock-count{display:inline-block;margin-top:9px;font-size:13px;font-weight:600;color:#415137}.low-stock{color:#a25a12}.movement-row{display:grid;grid-template-columns:1fr 70px 2fr 1fr;gap:12px;padding:14px 0;border-bottom:1px solid #ddd;font-size:12px}#product-search{max-width:420px;margin:16px 0}#product-form{margin:12px 0}#product-form input[type=checkbox]{width:auto;margin-right:8px}.item-row select{min-width:0;font-size:12px;padding:8px}#inventory h2{font-size:18px;margin-top:28px}@media(max-width:650px){.movement-row{grid-template-columns:1fr 60px}.sidebar nav{flex-wrap:wrap}}
 /* Account action follows backup controls in the sidebar. */
 .local-note .sign-out-form{display:block;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
 .local-note .sign-out-form button{display:block;width:100%;margin:0;padding:10px 12px;text-align:left;color:#595959;font-size:12px}
