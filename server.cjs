@@ -2,7 +2,7 @@ require('./lib/config.cjs');
 const http=require('node:http'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),auth=require('./lib/auth.cjs'),inventory=require('./lib/inventory.cjs');
 const secure=!!process.env.VERCEL||process.env.COOKIE_SECURE==='1',attempts=new Map();
 const publicFiles={'/login':'login.html','/login.css':'login.css','/assets/larz-logo.png':'assets/larz-logo.png'};
-const privateFiles={'/':'index.html','/index.html':'index.html','/src/app.js':'src/app.js','/src/core.js':'src/core.js','/src/style.css':'src/style.css','/src/cloud.js':'src/cloud.js','/src/pdf.js':'src/pdf.js','/assets/vendor/jspdf.umd.min.js':'assets/vendor/jspdf.umd.min.js'};
+const privateFiles={'/':'index.html','/index.html':'index.html','/src/app.js':'src/app.js','/src/core.js':'src/core.js','/src/style.css':'src/style.css','/src/cloud.js':'src/cloud.js','/src/revenue.js':'src/revenue.js','/src/pdf.js':'src/pdf.js','/assets/vendor/jspdf.umd.min.js':'assets/vendor/jspdf.umd.min.js'};
 const csrfCookie=req=>/(?:^|;\s*)larz_csrf=([a-f0-9]{64})(?:;|$)/.exec(req.headers.cookie||'')?.[1];
 function send(res,status,message,json=false){res.writeHead(status,{'Content-Type':json?'application/json':'text/plain; charset=utf-8'});res.end(json?JSON.stringify(message):message)}
 function redirect(res,to){res.writeHead(303,{Location:to});res.end()}

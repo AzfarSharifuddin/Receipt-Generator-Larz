@@ -40,3 +40,13 @@ Inventory and Saved documents now have Delete actions with confirmation. Deletio
 Add/edit a product to upload, replace, or remove its reference photo. PNG, JPEG and WebP inputs up to 5 MB are decoded and resized to a maximum 320 px JPEG thumbnail, with a server-side size/signature check. Thumbnails are stored privately in Supabase and shown only in inventory and product selection, never on invoice/receipt previews or PDFs. No public image bucket is used.
 
 Migration 002-delete-images.sql has been applied to the connected Supabase project. Redeploy updated code to Vercel; no new environment variables are required.
+
+## Revenue
+
+The Revenue page reports RM or US dollar amounts separately for the selected date range. Sales include confirmed invoices and standalone confirmed receipts; drafts, cancelled documents, and historical imports are excluded. Saved receipts linked to invoices count toward collected payments and reduce the invoice balance, but do not count as a second sale. The monthly chart groups sales by document date and collections by payment date. Date ranges are limited to five years for the chart.
+
+## Image upload checks
+
+Product images are resized JPEG data URLs in `larz.products.image`, not Supabase Storage objects. Local image processing uses data URLs permitted by the app security policy. Image and save errors stay visible in the product form; a failed image selection must be replaced or removed before saving.
+
+`npm run test:images` exercises the native picker, PNG/JPEG/WebP conversion, resize, save/reload, removal, invalid input, and save failures against the real server routes and security policy with an in-memory inventory. It never writes to Supabase. This optional browser check requires Playwright and its Chromium browser; `LARZ_PLAYWRIGHT_MODULE` can specify another installed Playwright module path, and `LARZ_TEST_BROWSERS` can list browser executable paths separated by `|`.
