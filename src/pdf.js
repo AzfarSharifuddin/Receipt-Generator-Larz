@@ -9,8 +9,8 @@ async function downloadDocumentPDF(d){
  pdf.setTextColor(30);pdf.setFont('helvetica','normal');
  let logoHeight=0;if(b.logo){const properties=pdf.getImageProperties(b.logo);const w=Math.min(38,18*properties.width/properties.height);logoHeight=w*properties.height/properties.width;pdf.addImage(b.logo,18,y,w,logoHeight)}
  write(d.type.toUpperCase(),192,25,23,'right');write(d.number,192,33,10,'right');
- y+=logoHeight?logoHeight+7:0;pdf.setFont('helvetica','bold');block(b.name,18,100,13);pdf.setFont('helvetica','normal');block(b.address,18,100);block(b.email,18,100);
- room(8);write(b.phone,18,y);write('Issue date: '+d.date,192,y,10,'right');y+=7;block(b.registration?'Reg. '+b.registration:'',18,100);y=Math.max(y,48);line();
+ y+=logoHeight?logoHeight+7:0;pdf.setFont('helvetica','bold');block(b.name,18,100,13);pdf.setFont('helvetica','normal');block(b.address,18,100);block(b.email,18,100);if(b.registration)block('SSM Registration No. '+b.registration,18,100);
+ room(8);write(b.phone,18,y);write('Issue date: '+d.date,192,y,10,'right');y+=7;y=Math.max(y,48);line();
  block(d.type==='receipt'?'RECEIVED FROM':'BILL TO',18,174,8);pdf.setFont('helvetica','bold');block(d.customer);pdf.setFont('helvetica','normal');block(d.address);block(d.email);if(d.due&&d.type==='invoice')block('Due date: '+d.due);if(d.reference)block('Reference: '+d.reference);y+=3;
  const tableHead=()=>{room(14);pdf.setFillColor(242);pdf.rect(18,y-5,174,9,'F');write('DESCRIPTION',20,y,8);write('QTY',119,y,8,'right');write('RATE',152,y,8,'right');write('AMOUNT',190,y,8,'right');y+=10};tableHead();
  for(const item of d.items){pdf.setFontSize(10);const lines=pdf.splitTextToSize(item.description,85);let first=true;for(let n=0;n<lines.length;){if(y+8>275){pdf.addPage();y=20;tableHead()}const count=Math.min(lines.length-n,Math.max(1,Math.floor((270-y)/5)));if(first){write(item.qty,119,y,10,'right');write(cash(InvoiceCore.round(item.price)),152,y,9,'right');write(cash(InvoiceCore.round(item.qty*item.price)),190,y,9,'right');first=false}for(let j=0;j<count;j++)write(lines[n+j],20,y+j*5);y+=count*5;n+=count}y+=4;pdf.setDrawColor(230);pdf.line(18,y-2,192,y-2)}
