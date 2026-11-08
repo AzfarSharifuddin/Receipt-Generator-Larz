@@ -1,9 +1,9 @@
 'use strict';
 
-// Prepare after saving, then share from a fresh tap (required by iOS Safari).
-const sharePDFButton=$('#print');
+// Confirm once, then share from a fresh tap (required by iOS Safari).
+const sharePDFButton=$('#save-doc');
 sharePDFButton.setAttribute('aria-haspopup','dialog');
-sharePDFButton.title='Save or share the PDF';
+sharePDFButton.title='Save and confirm this sale, then save or share its PDF';
 
 const sharePDFDialog=document.createElement('dialog');
 sharePDFDialog.className='share-pdf-dialog';
@@ -15,9 +15,14 @@ let preparedSharePDF=null,sharingPDF=false,preparingSharePDF=false;
 sharePDFButton.onclick=async()=>{
  if(sharePDFButton.disabled||preparingSharePDF)return;
  preparingSharePDF=true;
- sharePDFButton.disabled=true;sharePDFButton.textContent='Preparing PDF…';
+ sharePDFButton.disabled=true;sharePDFButton.textContent='Confirming…';
+ let saved=false;
  try{
-  if(!await saveWithDecision())return;
+  // The server applies only the stock difference for an existing sale.
+  // Linked receipts are confirmed without deducting the invoice's stock again.
+  if(!await save('confirm'))return;
+  saved=true;
+  sharePDFButton.textContent='Preparing PDF…';
   preparedSharePDF=createDocumentPDF(structuredClone(doc));
   const {pdf,filename}=preparedSharePDF;
   const file=typeof File==='function'?new File([pdf.output('blob')],filename,{type:'application/pdf'}):null;
@@ -31,8 +36,8 @@ sharePDFButton.onclick=async()=>{
  }catch(error){
   preparedSharePDF=null;
   console.error('PDF preparation failed',error);
-  toast('Could not create the PDF. Check your logo and try again.');
- }finally{preparingSharePDF=false;sharePDFButton.disabled=doc.status==='cancelled';sharePDFButton.textContent='PDF options'}
+  toast(saved?'Document saved. Could not create its PDF; check your logo and try Confirm again.':'Could not confirm the document. Try again.');
+ }finally{preparingSharePDF=false;sharePDFButton.disabled=doc.status==='cancelled';sharePDFButton.textContent='Confirm'}
 };
 
 $('#share-pdf-send').onclick=async()=>{
