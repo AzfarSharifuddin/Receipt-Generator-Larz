@@ -1,5 +1,5 @@
 /* Direct A4 export; locally bundled jsPDF, no remote requests. */
-async function downloadDocumentPDF(d){
+function createDocumentPDF(d){
  const pdf=new window.jspdf.jsPDF({unit:'mm',format:'a4'}),b=d.business,t=InvoiceCore.totals(d);let y=20;
  const cash=n=>`${d.currency==='MYR'?'RM':'US$'} ${(n/100).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}`;
  const write=(text,x,at,size=10,align='left')=>{pdf.setFontSize(size);pdf.text(String(text||''),x,at,{align})};
@@ -18,5 +18,7 @@ async function downloadDocumentPDF(d){
  if(d.type==='receipt'){block('PAYMENT DETAILS',18,174,8);block([d.paymentDate,d.method,d.paymentReference].filter(Boolean).join(' / '));if(t.balance===0)block('PAID IN FULL')}else if(d.payment){block('PAYMENT INSTRUCTIONS',18,174,8);block(d.payment)}
  if(d.notes||d.terms){room(15);block('NOTES',18,174,8);block([d.notes,d.terms].filter(Boolean).join('\n\n'))}
  const pages=pdf.getNumberOfPages();for(let i=1;i<=pages;i++){pdf.setPage(i);write(`${i} / ${pages}`,192,287,8,'right')}
- pdf.save(`${d.number}_${d.customer}`.replace(/[^a-zA-Z0-9 _.-]/g,'_').slice(0,150)+'.pdf');
+ const filename=`${d.number}_${d.customer}`.replace(/[^a-zA-Z0-9 _.-]/g,'_').slice(0,150)+'.pdf';
+ return {pdf,filename};
 }
+async function downloadDocumentPDF(d){const {pdf,filename}=createDocumentPDF(d);pdf.save(filename)}

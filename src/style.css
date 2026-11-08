@@ -3,7 +3,14 @@
 /* Clean branding and document actions. Keep the supplied logo unmodified. */
 .brand{display:block;width:170px;height:43px;padding:0;overflow:hidden;flex-shrink:0}
 .brand img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 49%}
-.preview-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:18px;max-width:700px;margin-left:auto;margin-right:auto}
+.preview-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:10px;margin-top:18px;max-width:700px;margin-left:auto;margin-right:auto}
+.share-pdf-dialog{width:calc(100% - 32px);max-width:440px;padding:26px;border:1px solid var(--line);border-radius:18px;background:#fff;color:inherit;box-shadow:0 20px 70px #30292330}
+.share-pdf-dialog::backdrop{background:#30292366}
+.share-pdf-dialog h2{margin:0 0 14px;font-size:22px}
+.share-pdf-dialog p{font-size:14px;line-height:1.6}
+.share-pdf-name{overflow-wrap:anywhere;color:var(--muted)}
+.share-pdf-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.share-pdf-actions button{flex:1;min-width:90px}
 @media(max-width:650px){.brand{width:145px;height:37px}.preview-actions{flex-wrap:wrap}.preview-actions button{flex:1}}
 @media print{.preview-actions{display:none!important}}
 /* Share a grid row so phone and issue date stay aligned in preview and print. */
