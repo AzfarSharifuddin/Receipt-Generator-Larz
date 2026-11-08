@@ -17,7 +17,7 @@ sharePDFButton.onclick=async()=>{
  preparingSharePDF=true;
  sharePDFButton.disabled=true;sharePDFButton.textContent='Preparing PDF…';
  try{
-  if(!await save())return;
+  if(!await saveWithDecision())return;
   preparedSharePDF=createDocumentPDF(structuredClone(doc));
   const {pdf,filename}=preparedSharePDF;
   const file=typeof File==='function'?new File([pdf.output('blob')],filename,{type:'application/pdf'}):null;
