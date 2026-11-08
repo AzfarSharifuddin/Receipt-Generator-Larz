@@ -1,17 +1,14 @@
 'use strict';
 
 // Prepare after saving, then share from a fresh tap (required by iOS Safari).
-const sharePDFButton=document.createElement('button');
-sharePDFButton.id='share-pdf';
-sharePDFButton.className='secondary';
-sharePDFButton.textContent='Share PDF';
-sharePDFButton.title='Share the PDF through WhatsApp or another app';
-$('#print').before(sharePDFButton);
+const sharePDFButton=$('#print');
+sharePDFButton.setAttribute('aria-haspopup','dialog');
+sharePDFButton.title='Save or share the PDF';
 
 const sharePDFDialog=document.createElement('dialog');
 sharePDFDialog.className='share-pdf-dialog';
 sharePDFDialog.setAttribute('aria-labelledby','share-pdf-title');
-sharePDFDialog.innerHTML='<h2 id="share-pdf-title">Share document</h2><p id="share-pdf-name" class="share-pdf-name"></p><p id="share-pdf-message" role="status"></p><div class="share-pdf-actions"><button type="button" id="share-pdf-send" class="primary">Share PDF</button><button type="button" id="share-pdf-download" class="secondary">Save PDF</button><button type="button" id="share-pdf-close" class="secondary">Close</button></div>';
+sharePDFDialog.innerHTML='<h2 id="share-pdf-title">PDF options</h2><p id="share-pdf-name" class="share-pdf-name"></p><p id="share-pdf-message" role="status"></p><div class="share-pdf-actions"><button type="button" id="share-pdf-download" class="primary" autofocus>Save PDF</button><button type="button" id="share-pdf-send" class="secondary">Share PDF</button><button type="button" id="share-pdf-close" class="secondary">Close</button></div>';
 document.body.append(sharePDFDialog);
 let preparedSharePDF=null,sharingPDF=false,preparingSharePDF=false;
 
@@ -35,7 +32,7 @@ sharePDFButton.onclick=async()=>{
   preparedSharePDF=null;
   console.error('PDF preparation failed',error);
   toast('Could not create the PDF. Check your logo and try again.');
- }finally{preparingSharePDF=false;sharePDFButton.disabled=doc.status==='cancelled';sharePDFButton.textContent='Share PDF'}
+ }finally{preparingSharePDF=false;sharePDFButton.disabled=doc.status==='cancelled';sharePDFButton.textContent='PDF options'}
 };
 
 $('#share-pdf-send').onclick=async()=>{
