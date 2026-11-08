@@ -16,3 +16,38 @@ Passwords are managed by Supabase Auth. Existing app users are not automatically
 Login requests use Supabase Auth plus a best-effort per-instance limiter. Configure Vercel Firewall login rate limits before broad public sharing. Database migrations/admin maintenance currently use the supplied database account; retain its connection string only in private server settings.
 
 Deployment has not been performed by this chat. Local browser login and live database stock tests have passed.
+# Public customer orders
+
+The customer form is served at `/order`. Employee pages and order records still require a workspace login.
+
+1. Apply `supabase/003-orders.sql` to an existing database before deploying this version. The schema has already been applied to the configured project during implementation. New projects can use `node scripts/migrate.cjs` to apply all migrations.
+2. In Inventory, edit each product you want customers to order, add a photo, and enable **Show on public order form**. Existing products default to private. Publishing includes the product name, photo, RM price and available/unavailable status; exact stock and staff fields remain private.
+3. Commit and push the app changes so Vercel deploys the new code. The Vercel function bundle includes `order.html`, `order.css` and `order.js`.
+4. Open **Pending Order → Open form** to check it, or use **Copy form link** to distribute the production URL.
+
+Submissions are pending and do not reserve stock. Employees review the order and choose **Create invoice** to prefill the existing editor. **Confirm** saves the invoice, deducts stock and approves the order in one transaction, then opens Save PDF / Share PDF. The shipping charge is entered by the employee. Rejection does not affect stock. Cancelled/deleted invoices retain the source order's approval history.
+
+The public form uses server-calculated prices, server validation, origin checks, a signed expiring form token, a honeypot, bounded requests, Cloudflare Turnstile and database-backed rate limits. Public submissions are limited to 20 attempts per IP per 15 minutes; catalogue requests are limited to 120. Rate-limit addresses are HMAC-hashed. `ORDER_RATE_SECRET` remains optional; its existing fallback is unchanged. No Vercel edge firewall rules were added: that change was cancelled.
+
+## Cloudflare Turnstile
+
+1. In Cloudflare Dashboard, open Turnstile and create a **Managed** widget named **LARZ Orders**. Add `receipt-generator-larz.vercel.app` as a hostname (without `https://` or `/order`). Add any custom hostname used for the form too. Leave pre-clearance off.
+2. Add the following variables to the ignored `.env.vercel.local` for local configuration and separately to Vercel Project Settings → Environment Variables for the deployments that use these hostnames:
+
+| Variable | Value | Vercel type |
+| --- | --- | --- |
+| `TURNSTILE_SITE_KEY` | Widget site key | Config |
+| `TURNSTILE_SECRET_KEY` | Widget secret key | Secret |
+| `TURNSTILE_HOSTNAMES` | `receipt-generator-larz.vercel.app` (comma-separated if multiple) | Config |
+
+3. Deploy the code and redeploy after changing Vercel variables. Local `.env` edits are not automatically copied to Vercel. If you use a preview hostname, register that exact hostname with both Cloudflare and `TURNSTILE_HOSTNAMES`.
+
+Only the site key is sent to the browser. The server verifies the challenge with Cloudflare and checks the hostname and `public_order` action before entering the order transaction. Tokens from another hostname/action, expired or invalid tokens, missing configuration, and verification outages block submission. The form preserves entered details and offers a fresh security check after errors. Verification retries use a deterministic Cloudflare idempotency key per submission/token, while the existing order idempotency identifier still prevents duplicate orders.
+
+Loopback development (`localhost`, `127.0.0.1`, `[::1]`) uses Cloudflare's documented dummy keys when neither `VERCEL` nor production `NODE_ENV` is set. That exception is unavailable on Vercel or any production runtime, and dummy keys are rejected there. Test keys are not production protection. No secret values are embedded in source or HTML.
+
+Run `node scripts/turnstile-test.cjs` for verification and widget-lifecycle tests. Order integration tests mock only Cloudflare's response and continue testing the actual database transactions. References: https://developers.cloudflare.com/turnstile/get-started/server-side-validation/ and https://developers.cloudflare.com/turnstile/troubleshooting/testing/.
+
+Public submissions use an idempotency identifier. On an uncertain connection failure, the form locks the submitted fields and offers **Retry submission** using the same identifier, avoiding duplicate orders. Customer details are not saved in browser storage.
+
+Run `node scripts/order-route-test.cjs` for isolated HTTP boundary tests. `node scripts/orders-test.cjs` uses the configured database, creates labelled TEST records, and cleans them up without using real products or consuming invoice numbers.

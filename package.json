@@ -10,7 +10,8 @@
     "test": "node test.cjs && node auth-test.cjs && node validation-test.cjs",
     "test:inventory": "node scripts/inventory-test.cjs",
     "migrate": "node scripts/migrate.cjs",
-    "test:images": "node scripts/product-image-test.cjs"
+    "test:images": "node scripts/product-image-test.cjs",
+    "test:orders": "node scripts/turnstile-test.cjs && node scripts/order-route-test.cjs && node scripts/orders-test.cjs"
   },
   "dependencies": {
     "postgres": "3.4.9"

@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#30251f"><title>Place an order · LARZ</title><link rel="stylesheet" href="/order.css"><script src="/order-verification.js" defer></script><script src="/order.js" defer></script></head>
+<body>
+<header class="order-header"><a href="/order" aria-label="LARZ order form"><img src="/assets/larz-logo.png" alt="LARZ" width="126" height="36"></a><span>Order form</span></header>
+<main>
+ <div class="page-heading"><span class="eyebrow">LARZ AUTOMATE</span><h1>Place your order.</h1></div>
+ <div id="catalog-status" role="status" class="notice">Loading products…</div>
+ <form id="order-form" hidden>
+  <div class="form-content">
+   <section class="panel products-panel" aria-labelledby="products-title"><div class="section-heading"><h2 id="products-title"><span>01</span> Choose your products</h2><span id="selected-count" aria-live="polite">0 selected</span></div><div id="products" class="products-grid"></div><p id="products-error" class="field-error" hidden></p></section>
+   <section class="panel" aria-labelledby="details-title"><h2 id="details-title"><span>02</span> Your details</h2><div class="fields">
+    <label class="wide" for="business">Business / invoice name<input id="business" name="business" autocomplete="organization" required maxlength="200" placeholder="Name to appear on your invoice"></label>
+    <label for="phone">WhatsApp / phone number<input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required maxlength="40" placeholder="e.g. +60 12 345 6789"></label>
+    <label for="email">Email <span class="optional">Optional</span><input id="email" name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@business.com"></label>
+   </div></section>
+   <section class="panel" aria-labelledby="delivery-title"><h2 id="delivery-title"><span>03</span> Delivery</h2><fieldset class="delivery-choice"><legend class="sr-only">Delivery method</legend><label><input type="radio" name="delivery" value="delivery" checked><span>Delivery</span></label><label><input type="radio" name="delivery" value="pickup"><span>Self-collection</span></label></fieldset>
+    <fieldset id="address-fields" class="fields address-fields"><legend class="sr-only">Delivery address</legend>
+     <label class="wide" for="street">Street address<input id="street" name="street" autocomplete="street-address" required maxlength="500" placeholder="Unit, building and street"></label>
+     <label for="postcode">Postcode<input id="postcode" name="postcode" autocomplete="postal-code" required maxlength="30"></label>
+     <label for="city">City<input id="city" name="city" autocomplete="address-level2" required maxlength="100"></label>
+     <label for="state">State<input id="state" name="state" autocomplete="address-level1" required maxlength="100"></label>
+     <label for="country">Country<input id="country" name="country" autocomplete="country-name" required maxlength="100" value="Malaysia"></label>
+    </fieldset><p id="pickup-note" class="helper" hidden>LARZ will arrange collection details after confirming your order.</p>
+   </section>
+  </div>
+  <aside class="panel order-summary" aria-labelledby="summary-title"><h2 id="summary-title">Order summary</h2><div id="summary-items"><p class="helper">Choose a product to get started.</p></div><dl class="summary-totals"><div><dt>Products</dt><dd id="subtotal">RM 0.00</dd></div><div><dt>Setup charge <small id="setup-detail"></small></dt><dd id="setup-total">RM 0.00</dd></div><div id="shipping-row"><dt>Shipping</dt><dd>Confirmed by LARZ</dd></div><div class="estimated-total"><dt>Estimated total</dt><dd id="order-total">RM 0.00</dd></div></dl><p class="helper" id="estimate-note">Shipping is confirmed during review.</p><p class="helper">Subject to stock availability and employee confirmation.</p>
+   <div class="bot-trap" aria-hidden="true"><label>Website<input name="website" id="website" tabindex="-1" autocomplete="off"></label></div>
+   <div id="order-verification" class="order-verification"></div><p id="verification-status" class="helper" role="status">Checking security…</p><button type="button" id="verification-retry" class="verification-retry" hidden>Retry security check</button><p id="submit-error" role="alert" class="field-error" hidden></p><button class="submit-button" id="submit-order" type="submit" disabled>Submit order</button><p class="privacy-note">Your details are used to process this order.</p>
+  </aside>
+ </form>
+ <section id="order-success" class="panel success-panel" hidden aria-labelledby="success-title" tabindex="-1"><span class="success-mark" aria-hidden="true">✓</span><h1 id="success-title">Order received.</h1><p class="reference-label">Your order reference</p><p id="order-reference" class="order-reference"></p><p>Awaiting confirmation from LARZ.</p><p class="helper">Keep this reference for any questions about your order.</p><a class="new-order" href="/order">Place another order</a></section>
+</main>
+</body></html>

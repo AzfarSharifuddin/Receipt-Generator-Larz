@@ -1,8 +1,9 @@
 require('./lib/config.cjs');
 const http=require('node:http'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),auth=require('./lib/auth.cjs'),inventory=require('./lib/inventory.cjs');
 const secure=!!process.env.VERCEL||process.env.COOKIE_SECURE==='1',attempts=new Map();
-const publicFiles={'/login':'login.html','/login.css':'login.css','/assets/larz-logo.png':'assets/larz-logo.png'};
-const privateFiles={'/':'index.html','/index.html':'index.html','/src/app.js':'src/app.js','/src/core.js':'src/core.js','/src/style.css':'src/style.css','/src/cloud.js':'src/cloud.js','/src/revenue.js':'src/revenue.js','/src/pdf.js':'src/pdf.js','/src/share.js':'src/share.js','/assets/vendor/jspdf.umd.min.js':'assets/vendor/jspdf.umd.min.js'};
+const orders=require('./lib/orders.cjs');
+const publicFiles={'/order':'order.html','/order.css':'order.css','/order.js':'order.js','/order-verification.js':'order-verification.js','/login':'login.html','/login.css':'login.css','/assets/larz-logo.png':'assets/larz-logo.png'};
+const privateFiles={'/src/orders.js':'src/orders.js','/':'index.html','/index.html':'index.html','/src/app.js':'src/app.js','/src/core.js':'src/core.js','/src/style.css':'src/style.css','/src/cloud.js':'src/cloud.js','/src/revenue.js':'src/revenue.js','/src/pdf.js':'src/pdf.js','/src/share.js':'src/share.js','/assets/vendor/jspdf.umd.min.js':'assets/vendor/jspdf.umd.min.js'};
 const csrfCookie=req=>/(?:^|;\s*)larz_csrf=([a-f0-9]{64})(?:;|$)/.exec(req.headers.cookie||'')?.[1];
 function send(res,status,message,json=false){res.writeHead(status,{'Content-Type':json?'application/json':'text/plain; charset=utf-8'});res.end(json?JSON.stringify(message):message)}
 function redirect(res,to){res.writeHead(303,{Location:to});res.end()}
@@ -10,7 +11,30 @@ async function body(req,max){let bytes=0,text='';for await(const chunk of req){b
 async function handler(req,res){
  res.setHeader('Cache-Control','no-store');res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('X-Frame-Options','DENY');res.setHeader('Referrer-Policy','no-referrer');res.setHeader('Content-Security-Policy',"default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'");
  let url;try{if(req.url.length>2048)return send(res,414,'URL too long');url=new URL(req.url,'http://localhost')}catch{return send(res,400,'Invalid URL')}
+ if(url.pathname==='/order')res.setHeader('Content-Security-Policy',"default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self' https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'");
  try{
+ if(url.pathname==='/api/public/catalog'){
+  if(req.method!=='GET')return send(res,405,{error:'Method not allowed'},true);
+  const ip=process.env.VERCEL?String(req.headers['x-forwarded-for']||'').split(',')[0].trim():req.socket.remoteAddress;
+  const hostname=new URL('http://'+req.headers.host).hostname;
+  await orders.rateLimit(ip,'catalog');return send(res,200,await orders.catalog({hostname}),true);
+ }
+ if(url.pathname==='/api/public/orders'){
+  if(req.method!=='POST')return send(res,405,{error:'Method not allowed'},true);
+  let sameOrigin=false;try{sameOrigin=new URL(req.headers.origin).host===req.headers.host}catch{}
+  if(!sameOrigin)return send(res,403,{error:'Open the order form on this website to submit an order.'},true);
+  const ip=process.env.VERCEL?String(req.headers['x-forwarded-for']||'').split(',')[0].trim():req.socket.remoteAddress;
+  await orders.rateLimit(ip);
+  if((req.headers['content-type']||'').split(';')[0]!=='application/json')return send(res,415,{error:'Expected JSON'},true);
+  let data;try{data=JSON.parse(await body(req,24000))}catch(error){if(error.status)throw error;return send(res,400,{error:'Invalid order'},true)}
+  const hostname=new URL('http://'+req.headers.host).hostname;
+  return send(res,200,await orders.submit(data,{hostname,ip}),true);
+ }
+ if(url.pathname==='/api/orders'){
+  if(!await auth.user(req))return send(res,401,{error:'Please sign in.'},true);
+  if(req.method!=='GET')return send(res,405,{error:'Method not allowed'},true);
+  return send(res,200,await orders.list(url.searchParams),true);
+ }
  if(url.pathname.startsWith('/api/')){const user=await auth.user(req);if(!user)return send(res,401,{error:'Session expired. Sign in again; your local draft is preserved.'},true);if(req.method==='GET'&&url.pathname==='/api/state')return send(res,200,await inventory.state(user),true);if(req.method!=='POST')return send(res,405,{error:'Method not allowed'},true);if(!csrfCookie(req)||req.headers['x-csrf-token']!==csrfCookie(req))return send(res,403,{error:'Reload the page and try again.'},true);if((req.headers['content-type']||'').split(';')[0]!=='application/json')return send(res,415,{error:'Expected JSON'},true);let data;try{data=JSON.parse(await body(req,2000000))}catch(e){if(e.status)throw e;return send(res,400,{error:'Invalid JSON'},true)}return send(res,200,await inventory.mutate(url.pathname.slice(5),data,user),true)}
  if(req.method==='POST'){
   if(!['/login','/logout'].includes(url.pathname))return send(res,404,'Not found');
@@ -26,6 +50,6 @@ async function handler(req,res){
  if(!['GET','HEAD'].includes(req.method))return send(res,405,'Method not allowed');
  let file;if(Object.hasOwn(publicFiles,url.pathname))file=publicFiles[url.pathname];else{if(!Object.hasOwn(privateFiles,url.pathname))return send(res,404,'Not found');if(!await auth.user(req))return redirect(res,'/login');file=privateFiles[url.pathname]}
  let data=await fs.promises.readFile(path.join(__dirname,file));if(file==='login.html'||file==='index.html'){const csrf=csrfCookie(req)||crypto.randomBytes(32).toString('hex');res.setHeader('Set-Cookie',`larz_csrf=${csrf}; HttpOnly; SameSite=Strict; Path=/${secure?'; Secure':''}`);data=Buffer.from(data.toString().replace(/(<form\b[^>]*method="post"[^>]*>)/g,`$1<input type="hidden" name="csrf" value="${csrf}">`).replace('</head>',`<meta name="csrf-token" content="${csrf}"></head>`));}if(file==='login.html')data=Buffer.from(data.toString().replace('<!--ERROR-->',url.searchParams.has('error')?'<p class="error" role="alert">Incorrect email or password, or account has no workspace access.</p>':''));res.setHeader('Content-Type',({'.html':'text/html; charset=utf-8','.css':'text/css','.js':'text/javascript','.png':'image/png'})[path.extname(file)]);res.end(req.method==='HEAD'?undefined:data);
- }catch(e){const status=e.status|| (e.code==='23505'?409:503);const message=e.status?e.message:e.code==='23505'?'That SKU or document number already exists.':'Service unavailable. Try again shortly.';send(res,status,url.pathname.startsWith('/api/')?{error:message}:message,url.pathname.startsWith('/api/'))}
+ }catch(e){const status=e.status|| (e.code==='23505'?409:503);const message=e.status?e.message:e.code==='23505'?'That SKU or document number already exists.':'Service unavailable. Try again shortly.';send(res,status,url.pathname.startsWith('/api/')?{error:message,...(e.publicCode?{code:e.publicCode}:{})}:message,url.pathname.startsWith('/api/'))}
 }
 const server=http.createServer(handler);if(require.main===module)server.listen(Number(process.env.PORT||4173),'127.0.0.1',()=>console.log('Larz Studio: http://127.0.0.1:'+(process.env.PORT||4173)));module.exports=server;

@@ -10,6 +10,7 @@
           "index.html",
           "login.html",
           "login.css",
+          "order.html", "order.css", "order.js", "order-verification.js",
           "src/**",
           "assets/**",
           "supabase-ca.crt",
