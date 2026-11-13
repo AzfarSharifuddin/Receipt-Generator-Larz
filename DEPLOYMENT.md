@@ -51,3 +51,9 @@ Run `node scripts/turnstile-test.cjs` for verification and widget-lifecycle test
 Public submissions use an idempotency identifier. On an uncertain connection failure, the form locks the submitted fields and offers **Retry submission** using the same identifier, avoiding duplicate orders. Customer details are not saved in browser storage.
 
 Run `node scripts/order-route-test.cjs` for isolated HTTP boundary tests. `node scripts/orders-test.cjs` uses the configured database, creates labelled TEST records, and cleans them up without using real products or consuming invoice numbers.
+
+## Document confirmation recovery
+
+Confirm retains its request identifier locally until the server acknowledges the save. Retrying after an interrupted connection checks the same operation. The acknowledged document number and revision are stored before refreshing the workspace list, and PDFs use the acknowledged snapshot. A matching saved document is recovered without another stock deduction; different contents open a review dialog instead of overwriting the saved version. Keep as new draft is available only for documents without a source order or invoice and creates a separate sale only after a subsequent Confirm.
+
+No schema migration or environment changes are needed for this fix. Run `node scripts/document-save-test.cjs` for isolated client tests and `node scripts/document-recovery-test.cjs` for database recovery/concurrency tests. The database test creates labelled TEST rows, preserves invoice counters and cleans up its records.

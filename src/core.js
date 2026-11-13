@@ -2,7 +2,14 @@
  const round=n=>Math.round((Number(n)+Number.EPSILON)*100);
  function totals(d){const subtotal=d.items.reduce((s,i)=>s+round(Number(i.qty)*Number(i.price)),0);const discount=Math.min(subtotal,d.discountType==='percent'?Math.round(subtotal*Number(d.discount||0)/100):round(d.discount||0));const tax=Math.round((subtotal-discount)*Number(d.tax||0)/100);const total=subtotal-discount+tax+round(d.shipping||0)+round(d.shippingCost||0);const paid=round(d.paid||0);return {subtotal,discount,tax,total,paid,balance:total-paid};}
  function validate(d){const errors=[];if(!d.number.trim())errors.push('Enter a document number.');if(!d.customer.trim())errors.push('Enter a customer name.');if(!/^\d{4}-\d{2}-\d{2}$/.test(d.date))errors.push('Choose an issue date.');if(!d.items.length||d.items.some(i=>!i.description.trim()||!Number.isFinite(Number(i.qty))||Number(i.qty)<=0||!Number.isFinite(Number(i.price))||Number(i.price)<0))errors.push('Each item needs a description, a quantity above zero, and a nonnegative price.');for(const key of ['discount','tax','shipping','paid'])if(!Number.isFinite(Number(d[key]))||Number(d[key])<0)errors.push('Adjustments and payments must be nonnegative numbers.');if(d.discountType==='percent'&&Number(d.discount)>100)errors.push('Percentage discount cannot exceed 100%.');if(d.type==='receipt'&&(!d.paymentDate||Number(d.paid)<=0))errors.push('A receipt needs a payment date and an amount received above zero.');return errors;}
- const api={round,totals,validate};root.InvoiceCore=api;if(typeof module!=='undefined')module.exports=api;
+ // Compare editable document content, excluding generated numbers and sync metadata.
+ const stable=value=>Array.isArray(value)?value.map(stable):value&&typeof value==='object'?Object.fromEntries(Object.keys(value).sort().map(key=>[key,stable(value[key])])):value;
+ function documentContent(d){
+  const keys=['type','date','due','currency','customer','address','email','reference','discount','discountType','tax','shipping','paid','paymentDate','method','paymentReference','notes','terms','payment','business'];
+  return JSON.stringify(stable({...Object.fromEntries(keys.map(key=>[key,d[key]])),shippingCost:d.shippingCost??0,setupChargeRate:d.setupChargeRate??null,sourceInvoice:d.sourceInvoice||null,orderId:d.orderId||null,items:d.items?.map(item=>({productId:item.productId||null,description:item.description,qty:item.qty,price:item.price}))}));
+ }
+ function sameDocumentContent(a,b){return !!a&&!!b&&documentContent(a)===documentContent(b)}
+ const api={round,totals,validate,sameDocumentContent};root.InvoiceCore=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof window!=='undefined'?window:globalThis);
 (function(root){
  const api=root.InvoiceCore,oldValidate=api.validate;

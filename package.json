@@ -9,6 +9,7 @@
     "start": "node server.cjs",
     "test": "node test.cjs && node auth-test.cjs && node validation-test.cjs",
     "test:inventory": "node scripts/inventory-test.cjs",
+    "test:recovery": "node scripts/document-save-test.cjs && node scripts/document-recovery-test.cjs",
     "migrate": "node scripts/migrate.cjs",
     "test:images": "node scripts/product-image-test.cjs",
     "test:orders": "node scripts/turnstile-test.cjs && node scripts/order-route-test.cjs && node scripts/orders-test.cjs"

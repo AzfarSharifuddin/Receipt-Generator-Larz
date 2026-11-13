@@ -20,10 +20,10 @@ sharePDFButton.onclick=async()=>{
  try{
   // The server applies only the stock difference for an existing sale.
   // Linked receipts are confirmed without deducting the invoice's stock again.
-  if(!await save('confirm'))return;
+  const confirmation=await save('confirm');if(!confirmation)return;
   saved=true;
   sharePDFButton.textContent='Preparing PDF…';
-  preparedSharePDF=createDocumentPDF(structuredClone(doc));
+  preparedSharePDF=createDocumentPDF(structuredClone(confirmation.document));
   const {pdf,filename}=preparedSharePDF;
   const file=typeof File==='function'?new File([pdf.output('blob')],filename,{type:'application/pdf'}):null;
   let supported=false;
