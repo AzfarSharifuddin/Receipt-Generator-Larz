@@ -58,6 +58,12 @@ The editor starts with a fresh invoice on every page load. Unfinished documents 
 
 No schema migration or environment changes are needed for this fix. Run `node scripts/document-save-test.cjs` for isolated client tests and `node scripts/document-recovery-test.cjs` for database recovery/concurrency tests. The database test creates labelled TEST rows, preserves invoice counters and cleans up its records.
 
+## Create document split workspace
+
+The editor uses the shared chocolate palette, a compact business profile and Customer, Document details, Items and Payment sections. Desktop keeps the form beside the monochrome preview. At 1,050 px and below the preview follows the form; mobile controls use larger targets and readable input text. Confirm remains below the preview with a live total, then opens the existing Save PDF / Share PDF options. Optional disclosure state stays in memory for the current document and resets for a new document. Inventory availability labels refresh after workspace sync without replacing quoted item prices.
+
+Private assets `src/editor.js` and `src/editor.css` are included by the existing Vercel configuration. No database migration or environment changes are needed. Run `npm run test:editor` for live totals, stock-label refresh, quoted-price protection, disclosure state, private assets and the existing save/retry checks. Invoice and receipt confirmation, both currencies, adjustments and 320/390 px layouts can be checked against the isolated sample-data preview without writing to Supabase.
+
 ## Revenue section tabs
 
 Revenue keeps Sales, Collected and Outstanding above Overview, Payments and Outstanding tabs. Period presets and custom dates share the same currency filter across all views. Payments use payment dates (or issue dates when absent); outstanding invoices use issue dates and their current balance after all confirmed linked receipts. Draft, cancelled, legacy and local-only records are excluded. Linked receipts add collections, not another sale. Lists show twenty records per page and open the existing saved document with protection for unfinished edits. The chart also offers an exact monthly totals table.

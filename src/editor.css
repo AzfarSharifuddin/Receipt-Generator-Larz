@@ -1,0 +1,95 @@
+/* App-only styling. The document and its PDF remain monochrome. */
+@media screen{
+ #editor{--editor-bg:#25201c;--editor-paper:#302923;--editor-input:#29231f;--editor-text:#f0e9e0;--editor-muted:#bdb0a2;--editor-line:#4f443a;--editor-sage:#bfcea8;color:var(--editor-text);color-scheme:dark}
+ body:has(#editor:not([hidden])) #save-status{color:#bdb0a2}
+ #editor .toolbar{justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px}
+ #editor .segmented{background:#302923;border:1px solid #4f443a;padding:3px;box-shadow:none}
+ #editor .segmented button{min-height:42px;padding:9px 22px;color:var(--editor-muted);font-weight:500}
+ #editor .segmented button.active{background:var(--editor-sage);color:#20271d;box-shadow:none}
+ #editor button{min-height:44px;font-size:12px}
+ #editor button:hover{background:#39412f}
+ #editor button:disabled{opacity:.5;cursor:default}
+ #editor button.secondary{background:var(--editor-paper);border-color:var(--editor-line);color:var(--editor-text)}
+ #editor .primary{background:var(--editor-sage);color:#20271d}
+ #editor .primary:hover{background:#cad7b5}
+ #editor #new-doc{margin-left:auto;white-space:nowrap}
+ #editor .workspace{grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:24px}
+ #editor .editor-card{min-width:0;background:transparent;border:0;border-radius:0;padding:0}
+ #editor .editor-section{background:var(--editor-paper);border:1px solid var(--editor-line);border-radius:13px;padding:22px;margin:0 0 18px}
+ #editor .editor-section:last-child{padding:18px 22px}
+ #editor .section-title{font-size:16px;font-weight:500;color:var(--editor-text);margin:0 0 20px}
+ #editor .section-title span{font-size:11px;color:var(--editor-muted)}
+ #editor label{font-size:12px;color:var(--editor-muted);font-weight:400;line-height:1.6;margin-bottom:8px}
+ #editor input,#editor select,#editor textarea{background:var(--editor-input);border-color:var(--editor-line);color:var(--editor-text);font-size:13px;min-height:44px;padding:11px 12px;border-radius:8px}
+ #editor input:focus,#editor select:focus,#editor textarea:focus{border-color:var(--editor-sage);box-shadow:0 0 0 3px #bfcea826}
+ #editor .grid{gap:17px 14px}
+ #editor .field{min-width:0;margin-bottom:16px}
+ #editor .editor-number{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:3px 0 0;padding-top:14px;border-top:1px solid var(--editor-line)}
+ #editor .editor-number label{margin:0;font-size:11px;white-space:nowrap}
+ #editor .editor-number #number{padding:0;min-height:24px;border:0;border-radius:0;background:transparent;color:var(--editor-text);font-size:12px;text-align:right;box-shadow:none;width:100%;min-width:0;text-overflow:ellipsis}
+ #editor details summary{color:var(--editor-muted);font-size:12px;font-weight:500;margin:0;padding:5px 0}
+ #editor details[open]>summary{margin-bottom:16px}
+ #editor .editor-business-profile{border:1px solid var(--editor-line);background:var(--editor-paper);border-radius:11px;padding:14px 18px;margin-bottom:22px}
+ #editor .editor-business-profile summary{color:var(--editor-text);font-size:13px;margin:0}
+ #editor .editor-business-profile p{white-space:pre-line;overflow-wrap:anywhere;font-size:12px;line-height:1.8;color:var(--editor-muted);margin:10px 0}
+ #editor .editor-business-profile button{margin-top:8px}
+ #editor .item-row{grid-template-columns:minmax(0,1fr) 66px 25px;gap:10px;align-items:start;margin-bottom:16px}
+ #editor .item-head{font-size:11px;color:var(--editor-muted);margin-bottom:9px}
+ #editor .item-row input{padding:11px 7px;font-size:13px}
+ #editor .item-row button{padding:5px 0;color:var(--editor-muted);font-size:20px;background:transparent}
+ #editor .product-choice{display:grid;grid-template-columns:40px minmax(0,1fr);gap:6px 9px;align-items:center;min-width:0}
+ #editor .product-choice .product-thumb,#editor .editor-product-placeholder{grid-column:1;grid-row:1 / span 2;width:40px;height:44px;object-fit:contain;align-self:start;border:1px solid var(--editor-line);border-radius:7px;background:#fff}
+ #editor .editor-product-placeholder{background:#29231f;display:grid;place-items:center;color:var(--editor-muted);font-size:14px}
+ #editor .product-choice select{grid-column:2;grid-row:1;width:100%;font-size:12px;padding:11px 7px}
+ #editor .editor-item-meta{grid-column:2;display:block;font-size:11px;line-height:1.6;color:var(--editor-muted);overflow-wrap:anywhere}
+ #editor .add-item{border-color:#718361;color:var(--editor-sage);background:transparent;margin:2px 0 0}
+ #editor .editor-setup{border-top:1px solid var(--editor-line);padding-top:17px;margin:19px 0 15px}
+ #editor .editor-setup label{color:var(--editor-muted);font-size:11px;margin-bottom:5px}
+ #editor #setup-charge-summary{color:var(--editor-text);font-size:12px;line-height:1.7;display:block;overflow-wrap:anywhere}
+ #editor .editor-setup small{color:var(--editor-muted);font-size:11px;display:block;margin-top:5px}
+ #editor .preview-wrap{min-width:0;margin-top:0}
+ #editor .preview-label{font-size:11px;letter-spacing:0;color:var(--editor-muted);margin:0 0 12px}
+ #editor .preview-label span{font-size:11px;letter-spacing:0;color:var(--editor-muted)}
+ #editor .paper{color-scheme:light;width:100%;max-width:none;padding:35px 26px;background:#fff;color:#333;min-height:690px;box-shadow:none}
+ #editor .paper-top>div:first-child{min-width:0;overflow-wrap:anywhere}
+ #editor .paper .bill-row>div{min-width:0;overflow-wrap:anywhere}
+ #editor .preview-actions{display:flex;align-items:center;justify-content:space-between;flex-wrap:nowrap;gap:16px;width:100%;max-width:none;padding-top:20px;margin-top:20px;border-top:1px solid var(--editor-line)}
+ #editor .editor-action-total{min-width:0}
+ #editor .editor-action-total>span{display:block;color:var(--editor-muted);font-size:11px;margin-bottom:5px}
+ #editor #editor-total{font-size:24px;font-weight:500;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+ #editor #save-doc{min-width:110px;flex:0 0 auto}
+ #editor .source-order-banner{background:#39412f;border-color:#59644b;color:#e0e9d3}
+ body:has(#editor:not([hidden])) .share-pdf-dialog{background:#302923;color:#f0e9e0;border-color:#4f443a;color-scheme:dark}
+ body:has(#editor:not([hidden])) .share-pdf-dialog .share-pdf-name{color:#bdb0a2}
+ body:has(#editor:not([hidden])) .share-pdf-dialog button{min-height:44px}
+ body:has(#editor:not([hidden])) .share-pdf-dialog .primary{background:#bfcea8;color:#20271d}
+ body:has(#editor:not([hidden])) .share-pdf-dialog .secondary{background:#29231f;color:#f0e9e0;border-color:#4f443a}
+}
+@media screen and (max-width:1050px){#editor .workspace{grid-template-columns:minmax(0,1fr)}#editor .preview-wrap{width:100%;max-width:760px;margin:8px auto 0}}
+@media screen and (max-width:650px){
+ body:has(#editor:not([hidden])) .app-header #page-title{font-size:34px;letter-spacing:-1.3px}
+ #editor .toolbar{flex-direction:row;align-items:center}
+ #editor .segmented{flex:0 1 auto}
+ #editor .segmented button{padding:9px 16px}
+ #editor .editor-section{padding:19px 17px;margin-bottom:15px}
+ #editor .editor-section:last-child{padding:15px 17px}
+ #editor .grid{grid-template-columns:minmax(0,1fr);gap:0}
+ #editor input,#editor select,#editor textarea{font-size:16px}
+ #editor input[type=date]{min-inline-size:0;width:100%;max-width:100%}
+ #editor .item-row{grid-template-columns:minmax(0,1fr) 55px 22px;gap:7px}
+ #editor .product-choice{grid-template-columns:33px minmax(0,1fr);gap:5px 7px}
+ #editor .product-choice .product-thumb,#editor .editor-product-placeholder{width:33px;height:44px}
+ #editor .product-choice select{font-size:16px;padding:10px 5px}
+ #editor .item-row input{font-size:16px}
+ #editor .editor-number{align-items:flex-start;flex-direction:column;gap:4px}
+ #editor .editor-number #number{text-align:left;font-size:14px}
+ #editor .paper{min-height:600px;padding:28px 18px}
+ #editor .paper h2{font-size:22px}
+ #editor .paper .logo{max-width:100px}
+ #editor .paper-top{column-gap:12px}
+ #editor .paper .totals{width:100%}
+ #editor .paper td{padding:13px 5px}
+ #editor .preview-actions{margin-top:18px}
+ #editor #save-doc{flex:0 0 auto;min-width:120px}
+}
+@media print{#editor-business-profile{display:none!important}}
