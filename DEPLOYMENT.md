@@ -58,6 +58,12 @@ The editor starts with a fresh invoice on every page load. Unfinished documents 
 
 No schema migration or environment changes are needed for this fix. Run `node scripts/document-save-test.cjs` for isolated client tests and `node scripts/document-recovery-test.cjs` for database recovery/concurrency tests. The database test creates labelled TEST rows, preserves invoice counters and cleans up its records.
 
+## Compact mobile navigation
+
+At 650 px and below, a compact logo/Menu header opens the existing sidebar inside a native modal drawer. All six pages and the original CSRF-protected Sign out form are retained, with one active-page indicator. Page selection, Close, Escape and tapping the backdrop dismiss the drawer. Focus returns to Menu on dismissal and to the page heading after navigation. Resizing to desktop closes the drawer, releases scroll locking and returns the same sidebar to its original position. Mobile Create document navigation returns to the current in-memory document; New document explicitly starts a fresh invoice. Refresh still starts fresh as before.
+
+Private assets `src/navigation.js` and `src/navigation.css` need no schema or environment changes. Run `npm run test:navigation` for navigation behavior, resize/focus cleanup, the single shared sign-out form, private assets and CSRF checks. The desktop sidebar and document/PDF rendering are unchanged.
+
 ## Create document split workspace
 
 The editor uses the shared chocolate palette, a compact business profile and Customer, Document details, Items and Payment sections. Desktop keeps the form beside the monochrome preview. At 1,050 px and below the preview follows the form; mobile controls use larger targets and readable input text. Confirm remains below the preview with a live total, then opens the existing Save PDF / Share PDF options. Optional disclosure state stays in memory for the current document and resets for a new document. Inventory availability labels refresh after workspace sync without replacing quoted item prices.
