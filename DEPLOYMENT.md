@@ -58,6 +58,12 @@ The editor starts with a fresh invoice on every page load. Unfinished documents 
 
 No schema migration or environment changes are needed for this fix. Run `node scripts/document-save-test.cjs` for isolated client tests and `node scripts/document-recovery-test.cjs` for database recovery/concurrency tests. The database test creates labelled TEST rows, preserves invoice counters and cleans up its records.
 
+## Revenue section tabs
+
+Revenue keeps Sales, Collected and Outstanding above Overview, Payments and Outstanding tabs. Period presets and custom dates share the same currency filter across all views. Payments use payment dates (or issue dates when absent); outstanding invoices use issue dates and their current balance after all confirmed linked receipts. Draft, cancelled, legacy and local-only records are excluded. Linked receipts add collections, not another sale. Lists show twenty records per page and open the existing saved document with protection for unfinished edits. The chart also offers an exact monthly totals table.
+
+The new private asset `src/revenue.css` is included by the existing Vercel configuration. No database migration or environment changes are needed. Run `npm run test:revenue` for isolated calculations, filtering, tabs, pagination, refresh failures, document navigation and private-asset checks. These checks do not write to Supabase.
+
 ## Business settings tabs
 
 Business details, Logo and Document defaults share one Save changes action. Tab switching and page navigation preserve unsaved edits in memory; a browser refresh clears them. Logo selection/removal is staged until Save changes succeeds. Validation opens the section containing the invalid field. Shared settings use revision checks, preserve edits on failure and reuse the request identifier for an unchanged retry. Saved invoices/receipts keep their original business snapshot, and linked orders keep their quoted setup rate.
