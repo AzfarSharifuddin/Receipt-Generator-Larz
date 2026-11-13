@@ -100,39 +100,47 @@
 .product-form-error{padding:10px 12px;border:1px solid #dfc9bd;background:#f7eae3;color:#853d2b;border-radius:8px;font-size:12px;line-height:1.5;margin:10px 0}
 
 /* Saved documents: one primary action, with secondary actions in a menu. */
+#history{--history-paper:#302923;--history-ink:#f0e9e0;--history-muted:#bdb0a2;--history-line:#4f443a;color:var(--history-ink);color-scheme:dark}
+#history input,#history select{background:var(--history-paper);color:var(--history-ink);border-color:var(--history-line);height:44px}
+#history input::placeholder{color:var(--history-muted);opacity:1}
+#history input:focus,#history select:focus{border-color:#bfcea8;box-shadow:0 0 0 3px #bfcea826}
+#history .primary{background:#bfcea8;color:#20271d}
+#history .primary:hover{background:#cad7b5;color:#20271d}
+#history .history-action-menu button{color:var(--history-ink)}
+#history .empty{color:var(--history-muted)}
 #history .history-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px}
 #history .history-search{flex:1;max-width:420px;min-width:0}
 #history #search{width:100%;max-width:none;padding:12px 14px;font-size:13px}
 #history .history-sort{min-width:155px}
 #history .history-sort select{padding:12px 14px;font-size:12px}
 #history #history-list{display:grid;gap:12px}
-#history .history-card{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:16px 24px;padding:20px 22px;border:1px solid #ded9ce;border-radius:14px;background:#fffefa;box-shadow:0 3px 14px #30251f04}
+#history .history-card{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:16px 24px;padding:20px 22px;border:1px solid var(--history-line);border-radius:14px;background:var(--history-paper);box-shadow:0 3px 14px #30251f04}
 #history .history-card:has(details[open]){z-index:3}
 #history .history-details{min-width:0}
-#history .history-customer{display:block;font-size:14px;font-weight:600;line-height:1.5;overflow-wrap:anywhere;color:#302923}
-#history .history-meta{display:flex;align-items:center;flex-wrap:wrap;gap:6px 9px;margin-top:7px;color:#746e63;font-size:11px;line-height:1.6}
+#history .history-customer{display:block;font-size:14px;font-weight:600;line-height:1.5;overflow-wrap:anywhere;color:var(--history-ink)}
+#history .history-meta{display:flex;align-items:center;flex-wrap:wrap;gap:6px 9px;margin-top:7px;color:var(--history-muted);font-size:11px;line-height:1.6}
 #history .history-document-number{font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
-#history .history-separator{color:#aaa193}
-#history .history-status{display:inline-flex;align-items:center;padding:3px 8px;border-radius:5px;font-size:10px;line-height:1.5;font-weight:600;background:#eae6dd;color:#655c50}
-#history .history-status--confirmed{background:#e8eedf;color:#415137}
-#history .history-status--draft{background:#f6ecd9;color:#866023}
-#history .history-status--cancelled{background:#f3e8e3;color:#86513e}
+#history .history-separator{color:var(--history-muted)}
+#history .history-status{display:inline-flex;align-items:center;padding:3px 8px;border-radius:5px;font-size:10px;line-height:1.5;font-weight:600;background:#3a312a;color:var(--history-muted)}
+#history .history-status--confirmed{background:#39412f;color:#b4d3a1}
+#history .history-status--draft{background:#493522;color:#e9bc7f}
+#history .history-status--cancelled{background:#4a3029;color:#eebba6}
 #history .history-end{display:flex;align-items:center;justify-content:flex-end;gap:24px}
-#history .history-amount{font-size:17px;font-weight:600;letter-spacing:-.3px;font-variant-numeric:tabular-nums;white-space:nowrap;color:#302923}
-#history .history-actions{display:flex;align-items:center;gap:8px}
-#history .history-open{padding:10px 17px;font-size:12px;border-radius:8px;min-height:38px}
-#history .history-overflow{position:relative}
-#history .history-overflow>summary{display:flex;align-items:center;justify-content:center;list-style:none;width:36px;height:38px;border:1px solid #ded9ce;border-radius:8px;background:#fffefa;color:#62594d;cursor:pointer;font-size:22px;line-height:1;user-select:none}
+#history .history-amount{font-size:17px;font-weight:600;letter-spacing:-.3px;font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--history-ink)}
+#history .history-actions{display:grid;grid-template-columns:80px 44px;align-items:center;gap:8px;flex-shrink:0}
+#history .history-open{display:inline-flex;align-items:center;justify-content:center;height:44px;min-height:44px;width:80px;padding:0 14px;font-size:12px;border-radius:8px;line-height:1}
+#history .history-overflow{position:relative;margin:0;padding:0;line-height:1}
+#history .history-overflow>summary{display:flex;align-items:center;justify-content:center;list-style:none;width:44px;height:44px;min-height:44px;margin:0;padding:0;border:1px solid var(--history-line);border-radius:8px;background:var(--history-paper);color:var(--history-muted);cursor:pointer;font-size:22px;line-height:1;user-select:none}
 #history .history-overflow>summary::-webkit-details-marker{display:none}
-#history .history-overflow>summary:hover,#history .history-overflow[open]>summary{background:#eeeee4;border-color:#a7b397}
+#history .history-overflow>summary:hover,#history .history-overflow[open]>summary{background:#39412f;border-color:#7c8c6a}
 #history .history-overflow>summary:focus-visible{outline:3px solid #a7b893;outline-offset:2px}
-#history .history-action-menu{position:absolute;right:0;top:calc(100% + 7px);z-index:5;width:205px;max-width:calc(100vw - 42px);padding:6px;border:1px solid #ded9ce;border-radius:10px;background:#fffefa;box-shadow:0 8px 30px #30251f1a}
+#history .history-action-menu{position:absolute;right:0;top:calc(100% + 7px);z-index:5;width:205px;max-width:calc(100vw - 42px);padding:6px;border:1px solid var(--history-line);border-radius:10px;background:var(--history-paper);box-shadow:0 8px 30px #0005}
 #history .history-menu-above .history-action-menu{top:auto;bottom:calc(100% + 7px)}
 #history .history-action-menu button{display:block;width:100%;padding:11px 12px;text-align:left;font-size:12px;font-weight:500;border-radius:6px;line-height:1.5}
-#history .history-action-menu button:hover{background:#f0eee6}
-#history .history-action-menu .history-danger{color:#a13d32}
-#history .history-action-menu .history-danger:hover{background:#faeae5}
-#history .history-action-menu hr{margin:5px 6px;border:0;border-top:1px solid #e9e4da}
+#history .history-action-menu button:hover{background:#39412f}
+#history .history-action-menu .history-danger{color:#f0b0a3}
+#history .history-action-menu .history-danger:hover{background:#4a3029}
+#history .history-action-menu hr{margin:5px 6px;border:0;border-top:1px solid var(--history-line)}
 @media(max-width:850px){#history .history-card{padding:18px;gap:14px}#history .history-end{gap:16px}}
-@media(max-width:650px){#history .history-toolbar{align-items:stretch;gap:12px;flex-wrap:wrap}#history .history-search{flex-basis:100%;max-width:none}#history .history-sort{width:auto;min-width:155px;margin-left:auto}#history .history-card{grid-template-columns:minmax(0,1fr);gap:16px;padding:18px}#history .history-end{justify-content:space-between}#history .history-meta{font-size:11px;gap:5px 8px}#history .history-customer{font-size:14px}#history .history-amount{font-size:18px}#history .history-open{min-height:42px;padding:11px 20px}#history .history-overflow>summary{width:42px;height:42px}}
+@media(max-width:650px){#history .history-toolbar{align-items:stretch;gap:12px;flex-wrap:wrap}#history .history-search{flex-basis:100%;max-width:none}#history .history-sort{width:auto;min-width:155px;margin-left:auto}#history .history-card{grid-template-columns:minmax(0,1fr);gap:16px;padding:18px}#history .history-end{justify-content:space-between}#history .history-meta{font-size:11px;gap:5px 8px}#history .history-customer{font-size:14px}#history .history-amount{font-size:18px}#history .history-open{height:44px;min-height:44px;padding:0 14px}#history .history-overflow>summary{width:44px;height:44px}}
 @media(pointer:coarse){#history .history-open,#history .history-overflow>summary{min-width:44px;min-height:44px}#history .history-action-menu button{min-height:44px}}
