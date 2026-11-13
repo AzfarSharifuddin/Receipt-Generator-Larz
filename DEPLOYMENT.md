@@ -58,6 +58,12 @@ The editor starts with a fresh invoice on every page load. Unfinished documents 
 
 No schema migration or environment changes are needed for this fix. Run `node scripts/document-save-test.cjs` for isolated client tests and `node scripts/document-recovery-test.cjs` for database recovery/concurrency tests. The database test creates labelled TEST rows, preserves invoice counters and cleans up its records.
 
+## Business settings tabs
+
+Business details, Logo and Document defaults share one Save changes action. Tab switching and page navigation preserve unsaved edits in memory; a browser refresh clears them. Logo selection/removal is staged until Save changes succeeds. Validation opens the section containing the invalid field. Shared settings use revision checks, preserve edits on failure and reuse the request identifier for an unchanged retry. Saved invoices/receipts keep their original business snapshot, and linked orders keep their quoted setup rate.
+
+The new private assets are `src/settings.js` and `src/settings.css`. No database migration or environment changes are required. Run `npm run test:settings` for isolated save, validation, conflict and retry checks; these tests do not write to Supabase.
+
 ## Inventory workspace
 
 Inventory uses a selectable product list and detail panel, with the selected product's paginated stock history. Stock movements provides the full ledger, grouped by date and filtered by additions/removals. History uses product IDs, includes deleted products, and is served by the authenticated `/api/movements` endpoint. Product history shows five movements per page; the full ledger shows twenty. Add/edit, image preparation, stock adjustment and soft deletion use the existing authenticated mutations. The stock form previews the resulting quantity and reuses its operation identifier for retries of an unchanged request.

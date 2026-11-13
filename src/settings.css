@@ -1,0 +1,49 @@
+/* Section tabs, staged edits and a single explicit workspace save. */
+#settings{--settings-paper:#302923;--settings-ink:#f0e9e0;--settings-muted:#bdb0a2;--settings-line:#4f443a;--settings-sage:#bfcea8;color:var(--settings-ink);color-scheme:dark}
+#settings .business-settings-form{max-width:900px}
+#settings .business-settings-tabs{display:flex;gap:28px;align-items:center;flex-wrap:wrap;border-bottom:1px solid var(--settings-line);margin:0 0 24px}
+#settings .business-settings-tabs button{border-radius:0;min-height:44px;padding:0 0 15px;border-bottom:2px solid transparent;background:transparent;font-size:13px;font-weight:500;color:var(--settings-muted)}
+#settings .business-settings-tabs button[aria-selected=true]{color:var(--settings-ink);border-bottom-color:var(--settings-sage);font-weight:600}
+#settings button{min-height:44px;font-size:12px;color:var(--settings-ink)}
+#settings button:hover{background:#39412f}
+#settings button:disabled{opacity:.5;cursor:default}
+#settings .primary{background:var(--settings-sage);color:#20271d}
+#settings .primary:hover{background:#cad7b5;color:#20271d}
+#settings .secondary{background:var(--settings-paper);color:var(--settings-ink);border-color:var(--settings-line)}
+#settings .business-settings-panel{background:var(--settings-paper);border:1px solid var(--settings-line);border-radius:14px;padding:25px}
+#settings .business-settings-panel h2{margin:0 0 24px;font-size:19px;line-height:1.4;font-weight:500;color:var(--settings-ink)}
+#settings .business-settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px 20px}
+#settings .business-settings-field{min-width:0;margin:0 0 22px}
+#settings .business-settings-grid .business-settings-field{margin:0}
+#settings .business-settings-full{grid-column:1/-1}
+#settings label{font-size:12px;font-weight:400;color:var(--settings-muted);margin-bottom:9px;line-height:1.5}
+#settings input,#settings textarea,#settings select{background:#29231f;border:1px solid var(--settings-line);color:var(--settings-ink);padding:11px 12px;font-size:13px;line-height:1.5;border-radius:8px}
+#settings textarea{min-height:90px;resize:vertical}
+#settings input:focus,#settings select:focus,#settings textarea:focus{border-color:var(--settings-sage);box-shadow:0 0 0 3px #bfcea826}
+#settings input::placeholder,#settings textarea::placeholder{color:var(--settings-muted);opacity:1}
+#settings .business-logo-row{display:flex;align-items:flex-start;gap:24px}
+#settings .business-logo-preview{width:170px;height:120px;display:flex;align-items:center;justify-content:center;border:1px solid var(--settings-line);border-radius:10px;background:#fff;flex-shrink:0;padding:12px}
+#settings .business-logo-preview img{max-width:100%;max-height:100%;object-fit:contain;margin:0}
+#settings .business-logo-preview.business-logo-empty{background:#494037;color:var(--settings-muted);font-size:12px}
+#settings .business-logo-controls{padding-top:6px;min-width:0}
+#settings .business-logo-controls h3{font-size:14px;font-weight:500;margin:0 0 13px}
+#settings .business-logo-buttons{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+#settings .business-settings-text-button,#settings #remove-logo{color:var(--settings-muted);font-weight:500}
+#settings .business-settings-hint{font-size:11px;line-height:1.7;color:var(--settings-muted);margin:12px 0 0;overflow-wrap:anywhere}
+#settings .business-logo-note{border-top:1px solid var(--settings-line);margin:25px 0 0;padding-top:20px;font-size:12px;color:var(--settings-muted);line-height:1.7}
+#settings .business-rate-input{display:flex;align-items:center;border:1px solid var(--settings-line);border-radius:8px;background:#29231f}
+#settings .business-rate-input>span{font-size:12px;color:var(--settings-muted);padding-left:12px}
+#settings .business-rate-input input{border:0;background:transparent;min-width:0}
+#settings .business-rate-input:focus-within{border-color:var(--settings-sage);box-shadow:0 0 0 3px #bfcea826}
+#settings .business-rate-input input:focus{box-shadow:none}
+#settings .business-rate-example{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:14px 16px;background:#25201c;border-radius:9px;margin:16px 0 24px;font-size:12px;color:var(--settings-muted)}
+#settings .business-rate-example strong{font-size:13px;font-weight:500;color:var(--settings-ink);font-variant-numeric:tabular-nums}
+#settings .business-currency-field{max-width:350px}
+#settings #settings-panel-defaults>.business-settings-field:last-child{margin-bottom:0}
+#settings .business-settings-savebar{display:flex;align-items:center;justify-content:space-between;gap:15px;border-top:1px solid var(--settings-line);margin-top:25px;padding-top:20px}
+#settings .business-settings-savebar>div{display:flex;align-items:center;gap:10px}
+#settings #business-settings-status{font-size:12px;color:var(--settings-muted);line-height:1.6}
+#settings #business-settings-status.business-settings-dirty{color:#e9bc7f}
+#settings .business-settings-error{font-size:12px;color:#f0b0a3;line-height:1.7;overflow-wrap:anywhere;margin:14px 0}
+#settings #reload-business-settings{margin-top:4px}
+@media(max-width:650px){#settings .business-settings-tabs{gap:20px}#settings .business-settings-tabs button{font-size:12px}#settings .business-settings-panel{padding:20px 18px}#settings .business-settings-grid{grid-template-columns:1fr;gap:19px}#settings .business-logo-row{flex-wrap:wrap;gap:18px}#settings .business-logo-preview{width:150px;height:105px}#settings .business-logo-controls{padding-top:0}#settings .business-settings-savebar{align-items:flex-start;flex-wrap:wrap;gap:15px}#settings .business-settings-savebar>div{margin-left:auto;gap:6px}#settings input,#settings textarea,#settings select{font-size:16px}#settings .business-rate-example{align-items:flex-start;flex-direction:column;gap:7px}}

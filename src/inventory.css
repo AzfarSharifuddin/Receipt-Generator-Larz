@@ -1,14 +1,14 @@
 /* Inventory workspace: product selection, details and an independent movement ledger. */
-/* Match the chocolate/cream preview on Inventory, Saved documents and Pending Order. */
+/* Match the chocolate/cream preview across the workspace pages. */
 @media screen{
- html:has(:is(#inventory,#history,#orders):not([hidden])){background:#25201c}
- body:has(:is(#inventory,#history,#orders):not([hidden])){min-height:100vh;min-height:100dvh;background:#25201c;color:#f0e9e0}
- body:has(:is(#inventory,#history,#orders):not([hidden])) .app-header #page-title{color:#f0e9e0}
- body:has(:is(#inventory,#history,#orders):not([hidden])) .sidebar{background:#211a16}
- body:has(:is(#inventory,#history,#orders):not([hidden])) .sidebar nav button{color:#d0c5b8}
- body:has(:is(#inventory,#history,#orders):not([hidden])) .sidebar nav button.active{background:#bfcca9;color:#2d3925}
- body:has(:is(#inventory,#history,#orders):not([hidden])) .sidebar nav button:hover{background:#493c31;color:#fffefa}
- body:has(:is(#inventory,#history,#orders):not([hidden])) .sidebar nav button.active:hover{background:#c9d6b7;color:#2d3925}
+ html:has(:is(#inventory,#history,#orders,#settings):not([hidden])){background:#25201c}
+ body:has(:is(#inventory,#history,#orders,#settings):not([hidden])){min-height:100vh;min-height:100dvh;background:#25201c;color:#f0e9e0}
+ body:has(:is(#inventory,#history,#orders,#settings):not([hidden])) .app-header #page-title{color:#f0e9e0}
+ body:has(:is(#inventory,#history,#orders,#settings):not([hidden])) .sidebar{background:#211a16}
+ body:has(:is(#inventory,#history,#orders,#settings):not([hidden])) .sidebar nav button{color:#d0c5b8}
+ body:has(:is(#inventory,#history,#orders,#settings):not([hidden])) .sidebar nav button.active{background:#bfcca9;color:#2d3925}
+ body:has(:is(#inventory,#history,#orders,#settings):not([hidden])) .sidebar nav button:hover{background:#493c31;color:#fffefa}
+ body:has(:is(#inventory,#history,#orders,#settings):not([hidden])) .sidebar nav button.active:hover{background:#c9d6b7;color:#2d3925}
 }
 #inventory{--stock-paper:#302923;--stock-ink:#f0e9e0;--stock-muted:#bdb0a2;--stock-line:#4f443a;--stock-sage:#bfcea8;--stock-canvas:#25201c;--stock-tint:#39412f;--stock-positive:#b4d3a1;--stock-warning:#e9bc7f;--stock-warning-bg:#493522;color-scheme:dark;color:var(--stock-ink)}
 #inventory button{color:var(--stock-ink)}
