@@ -1,7 +1,8 @@
 /* Inventory workspace: product selection, details and an independent movement ledger. */
 /* Match the chocolate/cream preview on Inventory, Saved documents and Pending Order. */
 @media screen{
- body:has(:is(#inventory,#history,#orders):not([hidden])){background:#25201c;color:#f0e9e0}
+ html:has(:is(#inventory,#history,#orders):not([hidden])){background:#25201c}
+ body:has(:is(#inventory,#history,#orders):not([hidden])){min-height:100vh;min-height:100dvh;background:#25201c;color:#f0e9e0}
  body:has(:is(#inventory,#history,#orders):not([hidden])) .app-header #page-title{color:#f0e9e0}
  body:has(:is(#inventory,#history,#orders):not([hidden])) .sidebar{background:#211a16}
  body:has(:is(#inventory,#history,#orders):not([hidden])) .sidebar nav button{color:#d0c5b8}
