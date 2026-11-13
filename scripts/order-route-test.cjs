@@ -6,7 +6,7 @@ server.listen(0,'127.0.0.1',async()=>{try{
  const base='http://127.0.0.1:'+server.address().port;
  for(const path of ['/order','/order.css','/order.js','/order-verification.js','/api/public/catalog'])assert.equal((await fetch(base+path,{redirect:'manual'})).status,200);
  for(const path of ['/api/state','/api/orders','/api/public/anything'])assert.equal((await fetch(base+path,{redirect:'manual'})).status,401);
- assert.equal((await fetch(base+'/src/orders.js',{redirect:'manual'})).status,303);
+ for(const asset of ['/src/orders.js','/src/orders.css']){assert.equal((await fetch(base+asset,{redirect:'manual'})).status,303);assert.equal((await fetch(base+asset,{headers:{cookie:'test-session'}})).status,200)}
  assert.equal((await fetch(base+'/api/orders',{headers:{cookie:'test-session'}})).status,200);
  const publicPolicy=(await fetch(base+'/order')).headers.get('content-security-policy');assert(publicPolicy.includes('frame-src https://challenges.cloudflare.com'));assert(publicPolicy.includes("script-src 'self' https://challenges.cloudflare.com"));const privatePolicy=(await fetch(base+'/login')).headers.get('content-security-policy');assert(!privatePolicy.includes('challenges.cloudflare.com'));
  const post=(body,origin=base,type='application/json')=>fetch(base+'/api/public/orders',{method:'POST',headers:{origin,'Content-Type':type},body});

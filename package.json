@@ -13,7 +13,7 @@
     "test:recovery": "node scripts/document-save-test.cjs && node scripts/document-recovery-test.cjs",
     "migrate": "node scripts/migrate.cjs",
     "test:images": "node scripts/product-image-test.cjs",
-    "test:orders": "node scripts/turnstile-test.cjs && node scripts/order-route-test.cjs && node scripts/orders-test.cjs"
+    "test:orders": "node scripts/turnstile-test.cjs && node scripts/order-route-test.cjs && node scripts/expandable-orders-test.cjs && node scripts/order-list-test.cjs && node scripts/orders-test.cjs"
   },
   "dependencies": {
     "postgres": "3.4.9"
