@@ -50,3 +50,11 @@ The Revenue page reports RM or US dollar amounts separately for the selected dat
 Product images are resized JPEG data URLs in `larz.products.image`, not Supabase Storage objects. Local image processing uses data URLs permitted by the app security policy. Image and save errors stay visible in the product form; a failed image selection must be replaced or removed before saving.
 
 `npm run test:images` exercises the native picker, PNG/JPEG/WebP conversion, resize, save/reload, removal, invalid input, and save failures against the real server routes and security policy with an in-memory inventory. It never writes to Supabase. This optional browser check requires Playwright and its Chromium browser; `LARZ_PLAYWRIGHT_MODULE` can specify another installed Playwright module path, and `LARZ_TEST_BROWSERS` can list browser executable paths separated by `|`.
+
+## Installed mobile layout
+
+Opening LARZ from an installed Home Screen icon on a screen up to 1000 px wide enables the mobile app layout: Create, Orders, Inventory and More bottom tabs. More contains Revenue, Saved documents, Business settings and the existing sign-out form. Switching tabs retains the current in-memory document; New document explicitly starts another one.
+
+Regular Safari/Chrome tabs keep the compact menu, and desktop browsers keep the sidebar. Inventory's page layout and controls are unchanged. The installed layout reserves space for the Home indicator and bottom tabs, hides the tabs when a software keyboard reduces the visual viewport, and keeps Confirm below the document preview. Invoice/receipt rendering, PDF generation, authentication and stock calculations are shared with the browser version.
+
+`npm run test:webapp` checks the manifest, authenticated assets, browser isolation, installed navigation, keyboard detection, pending-order badge and resizing. Verify Home Screen safe areas and the software keyboard on a physical iPhone after deployment.

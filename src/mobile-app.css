@@ -1,0 +1,84 @@
+/* Applied only by mobile-app.js in an installed, small-screen Home Screen app.
+   No shared page/Inventory selectors: ordinary browser rendering stays unchanged. */
+#mobile-app-tabs{display:none}
+@media screen{
+ html.mobile-app-ui{scroll-padding-bottom:calc(96px + var(--app-safe-bottom));background:#25201c}
+ body.mobile-app-ui{display:block;--mobile-app-nav-height:72px}
+ body.mobile-app-ui.mobile-navigation-ready .mobile-app-header{display:flex;align-items:center;justify-content:flex-start;min-height:calc(64px + var(--app-safe-top));width:100%;margin:0;padding:calc(12px + var(--app-safe-top)) max(16px,var(--app-safe-right)) 12px max(16px,var(--app-safe-left));background:#211a16;border-bottom:1px solid #4f443a}
+ body.mobile-app-ui .mobile-app-header .mobile-brand{display:block;width:100px;height:30px;overflow:hidden}
+ body.mobile-app-ui .mobile-brand img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 49%;filter:invert(1);mix-blend-mode:screen}
+ body.mobile-app-ui #mobile-menu-button{display:none}
+ body.mobile-app-ui.mobile-navigation-ready>main{width:100%;max-width:none;margin:0;padding:24px max(16px,var(--app-safe-right)) calc(24px + var(--mobile-app-nav-height) + var(--app-safe-bottom)) max(16px,var(--app-safe-left))}
+ body.mobile-app-ui .app-header{margin-bottom:24px}
+ body.mobile-app-ui .app-header #page-title,body.mobile-app-ui:has(#editor:not([hidden])) .app-header #page-title{font-size:30px;letter-spacing:-1.1px;line-height:1.15;margin:0 0 9px}
+ body.mobile-app-ui #mobile-app-tabs{position:fixed;z-index:6;inset:auto 0 0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;height:calc(var(--mobile-app-nav-height) + var(--app-safe-bottom));margin:0;padding:8px max(8px,var(--app-safe-right)) calc(8px + var(--app-safe-bottom)) max(8px,var(--app-safe-left));background:#211a16;border-top:1px solid #4f443a}
+ body.mobile-app-ui #mobile-app-tabs button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:56px;min-width:0;padding:5px 2px;border-radius:12px;color:#bdb0a2;background:transparent;text-align:center;font-size:11px;font-weight:500;line-height:1.2}
+ body.mobile-app-ui #mobile-app-tabs button.active{background:#39412f;color:#d5e3c3}
+ body.mobile-app-ui #mobile-app-tabs button:hover{background:#302923}
+ body.mobile-app-ui #mobile-app-tabs button:focus-visible{outline:2px solid #bfcea8;outline-offset:-2px}
+ body.mobile-app-ui .mobile-tab-icon{position:relative;display:block;width:23px;height:23px}
+ body.mobile-app-ui .mobile-tab-icon svg{display:block;width:100%;height:100%}
+ body.mobile-app-ui .mobile-orders-count{position:absolute;left:15px;top:-5px;min-width:17px;padding:2px 4px;border-radius:9px;font-size:9px;background:#bfcea8;color:#20271d;text-align:center;white-space:nowrap}
+ html[data-app-page=workspace] body.mobile-app-ui #toast{z-index:7;bottom:calc(24px + var(--mobile-app-nav-height) + var(--app-safe-bottom));width:max-content;max-width:calc(100% - 32px);text-align:center}
+ body.mobile-app-ui.mobile-app-keyboard #mobile-app-tabs{display:none}
+ html[data-app-page=workspace] body.mobile-app-ui.mobile-app-keyboard #toast{bottom:calc(16px + var(--app-safe-bottom))}
+ /* Native modal sheet reuses the original controls and CSRF sign-out form. */
+ body.mobile-app-ui #mobile-navigation{position:fixed;inset:auto 0 0;width:100%;max-width:none;height:auto;max-height:calc(100dvh - var(--app-safe-top) - 12px);margin:0;padding:16px max(16px,var(--app-safe-right)) calc(20px + var(--app-safe-bottom)) max(16px,var(--app-safe-left));border:1px solid #4f443a;border-bottom:0;border-radius:22px 22px 0 0;background:#211a16;color:#f0e9e0;overflow-y:auto;overscroll-behavior:contain;color-scheme:dark}
+ body.mobile-app-ui #mobile-navigation[open]{display:flex;flex-direction:column}
+ body.mobile-app-ui #mobile-navigation::backdrop{background:#100d0bc9}
+ body.mobile-app-ui #mobile-navigation .mobile-drawer-heading{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:0 0 12px;flex-shrink:0}
+ body.mobile-app-ui #mobile-navigation h2{font-family:Inter,'Segoe UI',Arial,sans-serif;font-size:22px;font-weight:450;letter-spacing:-.5px;margin:0}
+ body.mobile-app-ui #mobile-navigation-close{display:grid;place-items:center;width:48px;height:48px;padding:0;border:1px solid #4f443a;border-radius:12px;background:transparent;color:#f0e9e0;font-size:24px;font-weight:400}
+ body.mobile-app-ui #mobile-navigation .sidebar{position:static;display:flex;flex-direction:column;flex:1;width:100%;height:auto;min-height:0;padding:0;border:0;background:transparent}
+ body.mobile-app-ui #mobile-navigation .sidebar>.brand,body.mobile-app-ui #mobile-navigation .sidebar nav button:is([data-page=editor],[data-page=orders],[data-page=inventory]){display:none}
+ body.mobile-app-ui #mobile-navigation .sidebar nav{display:grid;gap:6px;margin:0;padding:0}
+ body.mobile-app-ui #mobile-navigation .sidebar nav button{display:flex;align-items:center;min-height:52px;width:100%;padding:12px 14px;border-radius:12px;font-size:14px;color:#d0c5b8;text-align:left}
+ body.mobile-app-ui #mobile-navigation .sidebar nav button.active{background:#bfcea8;color:#20271d}
+ body.mobile-app-ui #mobile-navigation .sidebar nav button:hover{background:#39412f}
+ body.mobile-app-ui #mobile-navigation .local-note{display:block;margin:0;padding:16px 0 0;font-size:0}
+ body.mobile-app-ui #mobile-navigation .local-note>.dot,body.mobile-app-ui #mobile-navigation .local-note>p,body.mobile-app-ui #mobile-navigation .sidebar-workspace-label{display:none}
+ body.mobile-app-ui #mobile-navigation .sign-out-form{display:block;margin:0;padding-top:16px;border-top:1px solid #4f443a}
+ body.mobile-app-ui #mobile-navigation .sign-out-form button{width:100%;min-height:48px;padding:12px 14px;border:1px solid #4f443a;border-radius:12px;background:transparent;color:#f0e9e0;text-align:left;font-size:14px}
+ html.mobile-app-ui.mobile-menu-open,body.mobile-app-ui.mobile-menu-open{overflow:hidden;overscroll-behavior:none}
+ /* Page refinements deliberately exclude Inventory and the document paper. */
+ body.mobile-app-ui :is(#editor,#orders,#history,#revenue,#settings) button{min-height:48px;font-size:13px;border-radius:12px}
+ body.mobile-app-ui :is(#editor,#orders,#history,#revenue,#settings) :is(input,select,textarea){font-size:16px;min-height:48px;border-radius:12px}
+ body.mobile-app-ui #editor .workspace{display:block}
+ body.mobile-app-ui #editor .editor-section,body.mobile-app-ui #settings .business-settings-panel,body.mobile-app-ui #history .history-card,body.mobile-app-ui #revenue .revenue-chart-card,body.mobile-app-ui #revenue .revenue-metric{padding:16px;border-radius:16px}
+ body.mobile-app-ui #editor .editor-business-profile{padding:14px 16px;border-radius:16px}
+ body.mobile-app-ui #editor .toolbar{flex-direction:row;align-items:center;gap:8px}
+ body.mobile-app-ui #editor .segmented{border-radius:14px}
+ body.mobile-app-ui #editor .segmented button{padding:9px 14px}
+ body.mobile-app-ui #editor #new-doc{padding:10px 12px}
+ body.mobile-app-ui #editor .preview-actions{flex-direction:column;align-items:stretch;gap:16px}
+ body.mobile-app-ui #editor .editor-action-total{display:flex;align-items:center;justify-content:space-between;gap:16px}
+ body.mobile-app-ui #editor .editor-action-total>span{margin:0;font-size:13px}
+ body.mobile-app-ui #editor #save-doc{width:100%;min-height:52px;flex:auto;font-size:15px}
+ body.mobile-app-ui #editor .editor-number #number{border-radius:0;min-height:24px;font-size:14px}
+ body.mobile-app-ui #editor .product-choice .product-thumb,body.mobile-app-ui #editor .editor-product-placeholder{height:48px}
+ body.mobile-app-ui #editor .product-choice select{font-size:16px}
+ body.mobile-app-ui #history .history-open{height:48px}
+ body.mobile-app-ui #history .history-actions{grid-template-columns:80px 48px}
+ body.mobile-app-ui #history .history-overflow>summary{height:48px;width:48px;border-radius:12px}
+ body.mobile-app-ui #history .history-meta{font-size:12px}
+ body.mobile-app-ui #orders #orders-search,body.mobile-app-ui #orders #orders-sort{height:48px;font-size:16px}
+ body.mobile-app-ui #orders .order-filters button{padding-right:10px;padding-left:10px}
+ body.mobile-app-ui #orders .order-card{border-radius:16px}
+ body.mobile-app-ui #orders .order-card-heading,body.mobile-app-ui #orders .order-expanded-body,body.mobile-app-ui #orders .order-review-actions{padding:16px}
+ body.mobile-app-ui #orders .orders-tools summary{min-height:48px;display:flex;align-items:center;border-radius:12px}
+ body.mobile-app-ui #settings .business-settings-tabs,body.mobile-app-ui #revenue .revenue-tabs{gap:16px}
+ body.mobile-app-ui #settings .business-settings-tabs button,body.mobile-app-ui #revenue .revenue-tabs button{border-radius:0;font-size:12px}
+ body.mobile-app-ui #settings .business-settings-savebar{flex-direction:column;align-items:stretch}
+ body.mobile-app-ui #settings .business-settings-savebar>div{width:100%;display:flex;flex-direction:column-reverse;gap:8px}
+ body.mobile-app-ui #settings #save-business-settings{width:100%;min-height:52px}
+ body.mobile-app-ui .share-pdf-dialog{width:calc(100% - 32px);max-width:420px;border-radius:20px;padding:20px}
+ body.mobile-app-ui:has(#editor:not([hidden])) .share-pdf-dialog button{min-height:48px;border-radius:12px}
+}
+@media screen and (max-width:350px){
+ body.mobile-app-ui.mobile-navigation-ready>main{padding-right:max(12px,var(--app-safe-right));padding-left:max(12px,var(--app-safe-left))}
+ body.mobile-app-ui .app-header #page-title{font-size:28px}
+ body.mobile-app-ui #editor .segmented button{padding:9px 10px}
+ body.mobile-app-ui #editor #new-doc{padding:9px;font-size:12px}
+ body.mobile-app-ui #settings .business-settings-tabs,body.mobile-app-ui #revenue .revenue-tabs{gap:10px}
+}
+@media print{#mobile-app-tabs{display:none!important}}
