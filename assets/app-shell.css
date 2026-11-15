@@ -1,6 +1,8 @@
 /* Safe screen edges for the installed app. Insets are zero in ordinary browser windows. */
 @media screen{
  :root{--app-safe-top:env(safe-area-inset-top,0px);--app-safe-right:env(safe-area-inset-right,0px);--app-safe-bottom:env(safe-area-inset-bottom,0px);--app-safe-left:env(safe-area-inset-left,0px)}
+ html[data-app-page=workspace] .refresh-icon-button{display:inline-flex;align-items:center;justify-content:center;flex:none;width:48px;height:48px;min-width:48px;min-height:48px;padding:0;border-radius:12px}
+ html[data-app-page=workspace] .refresh-icon-button svg{display:block;width:20px;height:20px}
  html[data-app-page=workspace] #toast{bottom:calc(25px + var(--app-safe-bottom));max-width:calc(100% - var(--app-safe-left) - var(--app-safe-right) - 32px);overflow-wrap:anywhere}
  html[data-app-page=workspace] dialog:not(#mobile-navigation){max-height:min(85dvh,calc(100dvh - var(--app-safe-top) - var(--app-safe-bottom) - 32px));overflow-y:auto;overscroll-behavior:contain}
  html[data-app-page=login] body{padding:max(18px,var(--app-safe-top)) max(18px,var(--app-safe-right)) max(18px,var(--app-safe-bottom)) max(18px,var(--app-safe-left))}
