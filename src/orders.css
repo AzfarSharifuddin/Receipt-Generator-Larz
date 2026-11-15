@@ -15,13 +15,8 @@
 #orders .order-filters button.active{background:#39412f;color:var(--order-ink)}
 #orders .order-tab-count{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;padding:0 5px;background:var(--order-paper);border-radius:5px;font-size:11px;font-variant-numeric:tabular-nums}
 #orders .orders-tools{gap:10px}
-#orders #order-form-tools{position:relative}
-#orders #order-form-tools summary{display:flex;align-items:center;justify-content:center;min-height:44px;padding:10px 14px;margin:0;list-style:none;border:1px solid var(--order-line);border-radius:9px;background:var(--order-paper);font-size:12px;color:var(--order-ink)}
-#orders #order-form-tools summary::-webkit-details-marker{display:none}
-#orders #order-form-tools summary:focus-visible{outline:3px solid #a7b893;outline-offset:2px}
-#orders .order-form-menu{position:absolute;right:0;top:calc(100% + 7px);width:180px;background:var(--order-paper);border:1px solid var(--order-line);border-radius:9px;padding:5px;box-shadow:0 8px 28px #0005;z-index:4}
-#orders .order-form-menu button,#orders .order-form-menu a{display:block;padding:12px;text-align:left;font-size:12px;color:var(--order-ink);width:100%;text-decoration:none;min-height:44px;border-radius:6px}
-#orders .order-form-menu a:hover{background:#39412f}
+#orders #refresh-orders{display:inline-flex;align-items:center;justify-content:center;flex:none;width:48px;height:48px;padding:0;border-radius:12px}
+#orders #refresh-orders svg{display:block;width:20px;height:20px}
 #orders .orders-search-row{display:flex;align-items:center;gap:12px}
 #orders #orders-search{flex:1;min-width:0;max-width:none;height:44px;font-size:13px;padding:12px 14px}
 #orders #orders-sort{width:auto;min-width:155px;height:44px;font-size:12px}
@@ -96,4 +91,4 @@
 #orders .order-reject-confirm:hover{background:#aa4638}
 @media(max-width:1050px){#orders .order-card-heading{gap:16px;padding:19px}#orders .order-card-end{gap:16px}#orders .order-review-items{grid-template-columns:1fr}#orders .order-review-actions p{max-width:300px}}
 @media(max-width:760px){#orders .order-card-heading{grid-template-columns:1fr}#orders .order-card-end{justify-content:space-between}#orders .order-card-price{text-align:left}#orders .order-review-actions{align-items:flex-start}#orders .order-review-buttons{margin-left:0;justify-content:space-between;width:100%}#orders .order-review-actions p{max-width:none}}
-@media(max-width:650px){#orders .orders-tools{width:100%;justify-content:flex-end}#orders .orders-tools>*{flex:none}#orders .order-filters{width:100%}#orders .order-filters button{flex:1;padding:9px 7px;justify-content:center}#orders .orders-search-row{flex-wrap:wrap}#orders #orders-search{flex-basis:100%}#orders #orders-sort{margin-left:auto}#orders .order-card-heading{padding:18px}#orders .order-card-meta{gap:7px 10px}#orders .order-expanded-body{padding:18px}#orders .order-contact-grid{grid-template-columns:1fr;gap:19px}#orders .order-review-items{gap:0}#orders .order-review-totals{max-width:none}#orders .order-review-actions{padding:18px}#orders .order-review-actions>button{width:100%}#orders .order-review-toggle{height:44px;width:112px}#orders .order-form-menu{max-width:calc(100vw - 32px)}#orders input,#orders select{font-size:16px}#orders .orders-pagination{gap:12px;flex-wrap:wrap}}
+@media(max-width:650px){#orders .orders-tools{width:100%;justify-content:flex-end}#orders .orders-tools>*{flex:none}#orders .order-filters{width:100%}#orders .order-filters button{flex:1;padding:9px 7px;justify-content:center}#orders .orders-search-row{flex-wrap:wrap}#orders #orders-search{flex-basis:100%}#orders #orders-sort{margin-left:auto}#orders .order-card-heading{padding:18px}#orders .order-card-meta{gap:7px 10px}#orders .order-expanded-body{padding:18px}#orders .order-contact-grid{grid-template-columns:1fr;gap:19px}#orders .order-review-items{gap:0}#orders .order-review-totals{max-width:none}#orders .order-review-actions{padding:18px}#orders .order-review-actions>button{width:100%}#orders .order-review-toggle{height:44px;width:112px}#orders input,#orders select{font-size:16px}#orders .orders-pagination{gap:12px;flex-wrap:wrap}}
