@@ -24,3 +24,13 @@
  html[data-app-page=login] .login-panel{padding-right:max(26px,var(--app-safe-right));padding-bottom:calc(26px + var(--app-safe-bottom));padding-left:max(26px,var(--app-safe-left))}
  html[data-app-page=login] input{font-size:16px}
 }
+/* iOS's native date appearance can force content-box sizing and an intrinsic
+   minimum width, even when the page sets width:100% and border-box.
+   Opt out of that appearance while retaining the native type=date picker.
+   Desktop browsers and all other form controls keep their existing styling. */
+@supports (-webkit-touch-callout:none){
+ @media screen{
+  html[data-app-page=workspace] :is(#editor,#revenue) input[type=date]{-webkit-appearance:none;appearance:none;display:block;box-sizing:border-box;width:100%;max-width:100%;min-width:0;min-inline-size:0}
+  html[data-app-page=workspace] :is(#editor,#revenue) input[type=date]::-webkit-date-and-time-value{min-width:0;min-height:1.5em;text-align:left}
+ }
+}
