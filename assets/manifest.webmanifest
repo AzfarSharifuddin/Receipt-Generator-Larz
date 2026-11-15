@@ -1,0 +1,19 @@
+{
+  "id": "/",
+  "name": "LARZ",
+  "short_name": "LARZ",
+  "lang": "en",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#25201c",
+  "theme_color": "#211a16",
+  "icons": [
+    {
+      "src": "/assets/larz-logo.png",
+      "sizes": "1254x1254",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

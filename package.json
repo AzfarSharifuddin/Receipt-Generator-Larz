@@ -17,6 +17,7 @@
     "test:revenue": "node scripts/revenue-test.cjs",
     "test:editor": "node scripts/editor-workspace-test.cjs && node scripts/document-save-test.cjs",
     "test:navigation": "node scripts/navigation-test.cjs",
+    "test:webapp": "node scripts/webapp-test.cjs",
     "test:orders": "node scripts/turnstile-test.cjs && node scripts/order-route-test.cjs && node scripts/expandable-orders-test.cjs && node scripts/order-list-test.cjs && node scripts/orders-test.cjs"
   },
   "dependencies": {

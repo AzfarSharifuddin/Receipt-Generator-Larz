@@ -1,0 +1,26 @@
+/* Safe screen edges for the installed app. Insets are zero in ordinary browser windows. */
+@media screen{
+ :root{--app-safe-top:env(safe-area-inset-top,0px);--app-safe-right:env(safe-area-inset-right,0px);--app-safe-bottom:env(safe-area-inset-bottom,0px);--app-safe-left:env(safe-area-inset-left,0px)}
+ html[data-app-page=workspace] #toast{bottom:calc(25px + var(--app-safe-bottom));max-width:calc(100% - var(--app-safe-left) - var(--app-safe-right) - 32px);overflow-wrap:anywhere}
+ html[data-app-page=workspace] dialog:not(#mobile-navigation){max-height:min(85dvh,calc(100dvh - var(--app-safe-top) - var(--app-safe-bottom) - 32px));overflow-y:auto;overscroll-behavior:contain}
+ html[data-app-page=login] body{padding:max(18px,var(--app-safe-top)) max(18px,var(--app-safe-right)) max(18px,var(--app-safe-bottom)) max(18px,var(--app-safe-left))}
+}
+@media screen and (display-mode:standalone) and (min-width:701px){html[data-app-page=login] .login-shell{min-height:calc(100svh - max(18px,var(--app-safe-top)) - max(18px,var(--app-safe-bottom)))}}
+@media screen and (min-width:651px){
+ html[data-app-page=workspace]{--app-sidebar-x:22px;--app-sidebar-y:36px;--app-main-x:42px;--app-main-y:40px}
+ html[data-app-page=workspace] .sidebar{padding:calc(var(--app-sidebar-y) + var(--app-safe-top)) var(--app-sidebar-x) calc(var(--app-sidebar-y) + var(--app-safe-bottom)) max(var(--app-sidebar-x),var(--app-safe-left))}
+ html[data-app-page=workspace] body>main{padding:calc(var(--app-main-y) + var(--app-safe-top)) max(var(--app-main-x),var(--app-safe-right)) calc(var(--app-main-y) + var(--app-safe-bottom)) var(--app-main-x)}
+}
+@media screen and (min-width:651px) and (max-width:1200px){html[data-app-page=workspace]{--app-sidebar-x:12px;--app-sidebar-y:28px;--app-main-x:24px;--app-main-y:28px}}
+@media screen and (max-width:650px){
+ html[data-app-page=workspace] body.mobile-navigation-ready .mobile-app-header{min-height:calc(72px + var(--app-safe-top));padding-top:calc(12px + var(--app-safe-top));padding-right:max(16px,var(--app-safe-right));padding-left:max(16px,var(--app-safe-left))}
+ html[data-app-page=workspace] body>main{padding-right:max(14px,var(--app-safe-right));padding-bottom:calc(22px + var(--app-safe-bottom));padding-left:max(14px,var(--app-safe-left))}
+ html[data-app-page=workspace] #mobile-navigation{padding-top:calc(20px + var(--app-safe-top));padding-right:max(16px,var(--app-safe-right));padding-bottom:calc(20px + var(--app-safe-bottom));padding-left:16px}
+}
+@media screen and (max-width:700px){
+ html[data-app-page=login] body{padding:0}
+ html[data-app-page=login] .login-shell{min-height:100svh}
+ html[data-app-page=login] .story{min-height:calc(280px + var(--app-safe-top));padding-top:calc(26px + var(--app-safe-top));padding-right:max(26px,var(--app-safe-right));padding-left:max(26px,var(--app-safe-left))}
+ html[data-app-page=login] .login-panel{padding-right:max(26px,var(--app-safe-right));padding-bottom:calc(26px + var(--app-safe-bottom));padding-left:max(26px,var(--app-safe-left))}
+ html[data-app-page=login] input{font-size:16px}
+}

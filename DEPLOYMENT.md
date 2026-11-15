@@ -58,6 +58,16 @@ The editor starts with a fresh invoice on every page load. Unfinished documents 
 
 No schema migration or environment changes are needed for this fix. Run `node scripts/document-save-test.cjs` for isolated client tests and `node scripts/document-recovery-test.cjs` for database recovery/concurrency tests. The database test creates labelled TEST rows, preserves invoice counters and cleans up its records.
 
+## iPhone Home Screen web app
+
+The employee app and login page reference the public `/manifest.webmanifest` and `/apple-touch-icon.png`. The app name is LARZ, its stable ID/start URL/scope are `/`, and its display mode is standalone. The icon reuses the original 1254 × 1254 company-logo PNG without redrawing, cropping or recoloring it; its manifest size matches the actual image. The public icon route serves that same file. The manifest and safe-area stylesheet live under `assets/`, covered by the existing Vercel bundle configuration. All employee pages and APIs retain their authentication and CSRF boundaries.
+
+`assets/app-shell.css` handles the notch, status-bar and Home-indicator insets on the workspace, login, navigation drawer and dialogs. Mobile login fields use 16 px text. This remains an online-only app: no service worker or offline caching is registered. Login/session behavior and database storage are unchanged. No database migration or environment variables are needed.
+
+After committing/pushing and waiting for the Vercel deployment, open the deployed employee app in Safari on iPhone. Use Share → Add to Home Screen, enable Open as Web App if offered, name it LARZ and tap Add. Install from the app/login page, not the customer `/order` form. If an older shortcut has a stale icon or browser mode, remove that shortcut and add it again. Reference: https://support.apple.com/guide/iphone/bookmark-a-website-iph42ab2f3a7/ios.
+
+Run `npm run test:webapp` for manifest/icon availability and types, exact original-logo bytes and dimensions, login/app metadata, signed-out redirects, protected employee data, CSRF and deployment inclusion. Local browser checks cover mobile layout, simulated safe-area insets, login fields and the existing Confirm → PDF options flow using fictional records. Actual iPhone installation, app relaunch/session behavior, photo picking and the native WhatsApp/PDF handoff need a final device check after deployment.
+
 ## Compact mobile navigation
 
 At 650 px and below, a compact logo/Menu header opens the existing sidebar inside a native modal drawer. All six pages and the original CSRF-protected Sign out form are retained, with one active-page indicator. Page selection, Close, Escape and tapping the backdrop dismiss the drawer. Focus returns to Menu on dismissal and to the page heading after navigation. Resizing to desktop closes the drawer, releases scroll locking and returns the same sidebar to its original position. Mobile Create document navigation returns to the current in-memory document; New document explicitly starts a fresh invoice. Refresh still starts fresh as before.
