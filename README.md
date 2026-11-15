@@ -58,3 +58,7 @@ Opening LARZ from an installed Home Screen icon on a screen up to 1000 px wide e
 Regular Safari/Chrome tabs keep the compact menu, and desktop browsers keep the sidebar. Inventory's page layout and controls are unchanged. The installed layout reserves space for the Home indicator and bottom tabs, hides the tabs when a software keyboard reduces the visual viewport, and keeps Confirm below the document preview. Invoice/receipt rendering, PDF generation, authentication and stock calculations are shared with the browser version.
 
 `npm run test:webapp` checks the manifest, authenticated assets, browser isolation, installed navigation, keyboard detection, pending-order badge and resizing. Verify Home Screen safe areas and the software keyboard on a physical iPhone after deployment.
+
+Installed mobile filter sheets are available in Saved documents, Revenue and Pending Order. Changes stay in the sheet until Apply; Cancel leaves the current results unchanged. Inventory retains its existing controls. Desktop and ordinary browser tabs retain their original filters.
+
+The installed app remembers each page's scroll position for the current tab, including after list refreshes. A new or different document opens at the top. Positions and filter choices are held in memory and are cleared when the app reloads; unfinished documents are not restored from browser storage.

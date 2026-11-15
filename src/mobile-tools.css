@@ -1,0 +1,38 @@
+/* Only the installed mobile app gets filter sheets; existing desktop controls remain in place. */
+.mobile-filter-button,.mobile-revenue-filter-summary,.mobile-history-filter-summary{display:none}
+#mobile-filter-dialog:not([open]){display:none}
+@media screen{
+ body.mobile-app-ui .mobile-filter-button{position:relative;display:inline-flex;align-items:center;justify-content:center;flex:none;width:48px;height:48px;min-height:48px;padding:0;border:1px solid #4f443a;border-radius:12px;background:#302923;color:#f0e9e0}
+ body.mobile-app-ui .mobile-filter-button svg{display:block;width:20px;height:20px}
+ body.mobile-app-ui .mobile-filter-button:hover{background:#39412f}
+ body.mobile-app-ui .mobile-filter-count{position:absolute;right:-4px;top:-5px;min-width:18px;padding:1px 5px;background:#bfcea8;color:#20271d;border-radius:10px;font-size:10px}
+ body.mobile-app-ui #history .history-sort,body.mobile-app-ui #revenue .revenue-controls>label,body.mobile-app-ui #orders #orders-sort,body.mobile-app-ui #orders label[for=orders-sort]{display:none}
+ body.mobile-app-ui #history .history-toolbar{flex-wrap:nowrap;gap:10px;margin-bottom:16px}
+ body.mobile-app-ui #history .history-search{flex:1 1 0;max-width:none}
+ body.mobile-app-ui #orders .orders-search-row{flex-wrap:nowrap}
+ body.mobile-app-ui #orders #orders-search{flex:1 1 0}
+ body.mobile-app-ui .mobile-history-filter-summary:not([hidden]){display:block;font-size:12px;line-height:1.6;color:#bdb0a2;margin:0 0 18px;overflow-wrap:anywhere}
+ body.mobile-app-ui #revenue .revenue-controls{align-items:center;flex-wrap:nowrap;gap:10px}
+ body.mobile-app-ui .mobile-revenue-filter-summary{display:block;flex:1;min-width:0;font-size:13px;color:#f0e9e0;line-height:1.6}
+ body.mobile-app-ui .mobile-revenue-filter-summary small{display:block;font-size:11px;color:#bdb0a2;overflow-wrap:anywhere}
+ html[data-app-page=workspace] body.mobile-app-ui #mobile-filter-dialog{position:fixed;inset:auto 0 0;width:100%;max-width:none;height:auto;max-height:calc(100dvh - var(--app-safe-top) - 12px);margin:0;padding:10px max(18px,var(--app-safe-right)) calc(22px + var(--app-safe-bottom)) max(18px,var(--app-safe-left));border:1px solid #4f443a;border-bottom:0;border-radius:22px 22px 0 0;background:#211a16;color:#f0e9e0;overflow-y:auto;overscroll-behavior:contain;color-scheme:dark}
+ body.mobile-app-ui #mobile-filter-dialog::backdrop{background:#100d0bc9}
+ body.mobile-app-ui .mobile-filter-handle{width:36px;height:4px;margin:0 auto 12px;background:#bdb0a2;opacity:.5;border-radius:4px}
+ body.mobile-app-ui .mobile-filter-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}
+ body.mobile-app-ui #mobile-filter-title{margin:0;font:400 22px/1.3 Inter,'Segoe UI',Arial,sans-serif;letter-spacing:-.5px}
+ body.mobile-app-ui #mobile-filter-dialog button{min-height:48px;border-radius:12px;font-size:13px}
+ body.mobile-app-ui #mobile-filter-dialog .secondary{border-color:#4f443a;background:#302923;color:#f0e9e0}
+ body.mobile-app-ui #mobile-filter-dialog .primary{background:#bfcea8;color:#20271d}
+ body.mobile-app-ui #mobile-filter-dialog .mobile-filter-close{width:48px;height:48px;padding:0;font-size:24px;font-weight:400}
+ body.mobile-app-ui #mobile-filter-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 12px}
+ body.mobile-app-ui #mobile-filter-fields label{grid-column:1/-1;min-width:0;margin:0;font-size:12px;color:#bdb0a2;font-weight:400;line-height:1.6}
+ body.mobile-app-ui #mobile-filter-fields label[for=mobile-filter-from],body.mobile-app-ui #mobile-filter-fields label[for=mobile-filter-to]{grid-column:auto}
+ body.mobile-app-ui #mobile-filter-fields input,body.mobile-app-ui #mobile-filter-fields select{display:block;box-sizing:border-box;width:100%;max-width:100%;min-width:0;min-inline-size:0;min-height:48px;margin-top:7px;padding:10px 11px;border:1px solid #4f443a;border-radius:11px;background:#29231f;color:#f0e9e0;font-size:16px}
+ body.mobile-app-ui #mobile-filter-fields input[type=date]{-webkit-appearance:none;appearance:none}
+ body.mobile-app-ui #mobile-filter-fields input[type=date]::-webkit-date-and-time-value{min-height:1.5em;text-align:left}
+ body.mobile-app-ui .mobile-filter-actions{display:grid;grid-template-columns:1fr 1.8fr;gap:10px;margin-top:24px;padding-top:18px;border-top:1px solid #4f443a}
+ body.mobile-app-ui #mobile-filter-error{font-size:13px;line-height:1.6;margin:18px 0 0;color:#f0b0a3}
+ html.mobile-filter-open,body.mobile-filter-open{overflow:hidden;overscroll-behavior:none}
+}
+@media screen and (max-width:350px){body.mobile-app-ui #mobile-filter-fields{grid-template-columns:minmax(0,1fr)}}
+@media print{.mobile-filter-button,.mobile-revenue-filter-summary,.mobile-history-filter-summary,#mobile-filter-dialog{display:none!important}}
