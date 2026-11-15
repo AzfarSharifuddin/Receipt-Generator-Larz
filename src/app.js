@@ -57,6 +57,15 @@ $('#history-list').addEventListener('toggle',event=>{
 for(const eventName of ['pointerdown','focusin'])document.addEventListener(eventName,event=>document.querySelectorAll('#history-list details[open]').forEach(details=>{if(!details.contains(event.target))closeHistoryMenu(details)}));
 document.addEventListener('keydown',event=>{if(event.key!=='Escape')return;const details=document.querySelector('#history-list details[open]');if(details){event.preventDefault();closeHistoryMenu(details,true)}});
 $('#document-form').addEventListener('input',e=>{const el=e.target;if(el.dataset.index!==undefined){doc.items[+el.dataset.index][el.dataset.key]=el.dataset.key==='description'?el.value:Number(el.value);syncSetupCharge()}else if(el.name){if(el.name==='currency'&&el.value!==doc.currency){toast('Currency changed. Prices are not converted; review your amounts.');doc.setupChargeRate=chargeRate(el.value)}doc[el.name]=el.type==='number'?Number(el.value):el.value;if(el.name==='currency')syncSetupCharge()}draft()});
+// Native calendar clear/reset actions must also reach the document when a
+// browser commits with change or blur instead of the usual input event.
+function syncDocumentDate(event){
+ const input=event.target;
+ if(input.type!=='date'||!['date','due','paymentDate'].includes(input.name)||input.disabled||input.readOnly||doc[input.name]===input.value)return;
+ doc[input.name]=input.value;draft();
+}
+$('#document-form').addEventListener('change',syncDocumentDate);
+$('#document-form').addEventListener('focusout',syncDocumentDate);
 $('#document-form').addEventListener('change',e=>{if(e.target.name==='customer'){const c=db.documents.slice().reverse().find(d=>d.customer===doc.customer);if(c){doc.address=c.address;doc.email=c.email;render();draft()}}if(e.target.dataset.key==='description'){const i=doc.items[+e.target.dataset.index];const found=db.documents.filter(d=>d.currency===doc.currency).flatMap(d=>d.items).reverse().find(x=>x.description===i.description);if(found){i.price=found.price;render();draft()}}});
 $('#document-form').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.action==='settings')show('settings');if(b.dataset.action==='add'){if(doc.items.length>=200)return toast('Maximum 200 items per document.');doc.items.push({description:'',qty:1,price:0});syncSetupCharge();render();draft()}if(b.dataset.remove!==undefined){if(doc.items.length===1)return toast('Keep at least one item.');doc.items.splice(+b.dataset.remove,1);syncSetupCharge();render();draft()}});
 $('#document-form').onsubmit=e=>e.preventDefault();document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>b.dataset.page==='editor'?startNewDocument():show(b.dataset.page));
