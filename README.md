@@ -45,6 +45,10 @@ Migration 002-delete-images.sql has been applied to the connected Supabase proje
 
 The Revenue page reports RM or US dollar amounts separately for the selected date range. Sales include confirmed invoices and standalone confirmed receipts; drafts, cancelled documents, and historical imports are excluded. Saved receipts linked to invoices count toward collected payments and reduce the invoice balance, but do not count as a second sale. The monthly chart groups sales by document date and collections by payment date. Date ranges are limited to five years for the chart.
 
+Revenue > Outstanding > Mark as paid records the invoice's remaining balance after confirmation. It uses today's date in Malaysia, preserves earlier partial payments, and updates the invoice preview/PDF without creating a receipt or changing stock. Payments are stored privately in `larz.invoice_payments`; repeated requests cannot record the same balance twice.
+
+Migration `004-invoice-payments.sql` has been applied to the configured Supabase project. Run `npm run test:revenue` for isolated payment/report/security checks, or `npm run test:payments:db` for transactional database checks that roll back their fixtures and do not consume document numbers.
+
 ## Image upload checks
 
 Product images are resized JPEG data URLs in `larz.products.image`, not Supabase Storage objects. Local image processing uses data URLs permitted by the app security policy. Image and save errors stay visible in the product form; a failed image selection must be replaced or removed before saving.

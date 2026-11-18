@@ -1,6 +1,6 @@
 /* Direct A4 export; locally bundled jsPDF, no remote requests. */
 function createDocumentPDF(d){
- const pdf=new window.jspdf.jsPDF({unit:'mm',format:'a4'}),b=d.business,t=InvoiceCore.totals(d);let y=20;
+ const pdf=new window.jspdf.jsPDF({unit:'mm',format:'a4'}),b=d.business,t=InvoiceCore.displayTotals(d);let y=20;
  const cash=n=>`${d.currency==='MYR'?'RM':'US$'} ${(n/100).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}`;
  const write=(text,x,at,size=10,align='left')=>{pdf.setFontSize(size);pdf.text(String(text||''),x,at,{align})};
  const line=()=>{pdf.setDrawColor(210);pdf.line(18,y,192,y);y+=7};

@@ -2,7 +2,7 @@
 (function(root){
  const core=typeof module!=='undefined'&&module.exports?require('./core.js'):root.InvoiceCore;
  function calendarDate(value){return typeof value==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(value)&&Number.isFinite(Date.parse(value))&&new Date(value).toISOString().slice(0,10)===value}
- function report(documents,from,to,currency){
+ function report(documents,from,to,currency,payments=[]){
   if(!calendarDate(from)||!calendarDate(to)||from>to)throw Error('Choose a valid date range.');
   if(!['MYR','USD'].includes(currency))throw Error('Choose RM or US dollar.');
   const first=new Date(from+'T12:00:00Z'),last=new Date(to+'T12:00:00Z');
@@ -11,12 +11,13 @@
   const all=documents.filter(d=>d.currency===currency&&d.status==='confirmed');
   const sales=all.filter(d=>!d.sourceInvoice),receipts=all.filter(d=>d.type==='receipt'&&d.sourceInvoice);
   const inRange=date=>calendarDate(date)&&date>=from&&date<=to;
-  const saleRange=sales.filter(d=>inRange(d.date)),linked=new Map();
-  for(const receipt of receipts)linked.set(receipt.sourceInvoice,(linked.get(receipt.sourceInvoice)||0)+core.totals(receipt).paid);
+  const saleRange=sales.filter(d=>inRange(d.date));
   const invoices=saleRange.filter(d=>d.type==='invoice');
-  const outstanding=invoices.map(d=>({document:d,balance:Math.max(0,core.totals(d).total-core.totals(d).paid-(linked.get(d.id)||0))})).filter(row=>row.balance>0).sort((a,b)=>a.document.date.localeCompare(b.document.date)||String(a.document.number).localeCompare(String(b.document.number)));
+  const outstanding=invoices.map(d=>({document:d,balance:core.invoicePayments(d,all,payments).balance})).filter(row=>row.balance>0).sort((a,b)=>a.document.date.localeCompare(b.document.date)||String(a.document.number).localeCompare(String(b.document.number)));
   // Linked receipts are collections, never an additional sale.
-  const collections=[...sales,...receipts].map(d=>({document:d,date:d.paymentDate||d.date,amount:core.totals(d).paid})).filter(row=>row.amount>0&&inRange(row.date)).sort((a,b)=>b.date.localeCompare(a.date)||String(a.document.number).localeCompare(String(b.document.number)));
+  const invoiceById=new Map(all.filter(d=>d.type==='invoice').map(d=>[d.id,d])),seenPayments=new Set();
+  const recorded=payments.filter(p=>{const d=invoiceById.get(p.invoice_id);if(!d||p.currency!==currency||typeof p.id!=='string'||seenPayments.has(p.id)||!Number.isSafeInteger(p.amount_cents)||p.amount_cents<=0)return false;seenPayments.add(p.id);return true}).map(p=>({document:invoiceById.get(p.invoice_id),date:p.paid_on,amount:p.amount_cents,method:'—',paymentId:p.id}));
+  const collections=[...[...sales,...receipts].map(d=>({document:d,date:d.paymentDate||d.date,amount:core.totals(d).paid})),...recorded].filter(row=>row.amount>0&&inRange(row.date)).sort((a,b)=>b.date.localeCompare(a.date)||String(a.document.number).localeCompare(String(b.document.number)));
   const months=[];for(let n=0;n<span;n++){const date=new Date(Date.UTC(first.getUTCFullYear(),first.getUTCMonth()+n,1));months.push({key:date.toISOString().slice(0,7),label:date.toLocaleDateString('en',{month:'short',year:'2-digit',timeZone:'UTC'}),sales:0,collected:0})}
   const buckets=new Map(months.map(month=>[month.key,month]));
   for(const d of saleRange)buckets.get(d.date.slice(0,7)).sales+=core.totals(d).total;
@@ -42,7 +43,7 @@ function setRevenueTab(tab,focus=false){
 function renderRevenue(){
  const from=$('#revenue-from').value,to=$('#revenue-to').value,currency=$('#revenue-currency').value;
  $('#revenue-data').hidden=true;$('#revenue-error').hidden=true;
- try{revenueReport=RevenueData.report(cloud.documents,from,to,currency)}catch(error){revenueReport=null;$('#revenue-error').textContent=error.message;$('#revenue-error').hidden=false;return}
+ try{revenueReport=RevenueData.report(cloud.documents,from,to,currency,cloud.payments||[])}catch(error){revenueReport=null;$('#revenue-error').textContent=error.message;$('#revenue-error').hidden=false;return}
  if(!cloudReady){revenueReport=null;return}
  $('#revenue-data').hidden=false;
  $('#revenue-summary').innerHTML=[['Sales',revenueReport.salesTotal,`${revenueReport.saleCount} confirmed ${revenueReport.saleCount===1?'sale':'sales'}`],['Collected',revenueReport.collected,'Payments recorded in period'],['Outstanding',revenueReport.outstandingTotal,'Balance on invoices issued in period']].map(([label,value,note])=>`<article class="revenue-metric"><span>${label}</span><strong>${revenueMoney(value,currency)}</strong><small>${note}</small></article>`).join('');
@@ -69,7 +70,7 @@ function renderRevenueList(kind){
  const payment=kind==='payments',rows=payment?revenueReport.collections:revenueReport.outstanding,currency=$('#revenue-currency').value,limit=20;
  revenuePages[kind]=Math.min(revenuePages[kind],Math.max(1,Math.ceil(rows.length/limit)));const page=revenuePages[kind],start=(page-1)*limit;
  $('#revenue-'+kind+'-empty').hidden=!!rows.length;$('#revenue-'+kind+'-table').hidden=!rows.length;
- $('#revenue-'+kind+'-rows').innerHTML=rows.slice(start,start+limit).map(row=>{const d=row.document,date=payment?row.date:d.date;return `<tr><td class="revenue-document"><strong>${esc(d.customer)}</strong><span>${esc(d.number)}</span></td><td data-label="${payment?'Payment date':'Issue date'}"><time datetime="${esc(date)}">${esc(savedDocumentDate(date))}</time></td><td data-label="${payment?'Method':'Due date'}">${payment?esc(d.method||'—'):d.due?esc(savedDocumentDate(d.due)):'—'}</td><td class="revenue-amount" data-label="${payment?'Received':'Balance'}">${revenueMoney(payment?row.amount:row.balance,currency)}</td><td class="revenue-row-action"><button type="button" class="secondary" data-revenue-open="${esc(d.id)}">Open<span class="sr-only"> ${esc(d.number)}</span></button></td></tr>`}).join('');
+ $('#revenue-'+kind+'-rows').innerHTML=rows.slice(start,start+limit).map(row=>{const d=row.document,date=payment?row.date:d.date;return `<tr><td class="revenue-document"><strong>${esc(d.customer)}</strong><span>${esc(d.number)}</span></td><td data-label="${payment?'Payment date':'Issue date'}"><time datetime="${esc(date)}">${esc(savedDocumentDate(date))}</time></td><td data-label="${payment?'Method':'Due date'}">${payment?esc(row.method||d.method||'—'):d.due?esc(savedDocumentDate(d.due)):'—'}</td><td class="revenue-amount" data-label="${payment?'Received':'Balance'}">${revenueMoney(payment?row.amount:row.balance,currency)}</td><td class="revenue-row-action"><div class="revenue-row-buttons"><button type="button" class="secondary" data-revenue-open="${esc(d.id)}">Open<span class="sr-only"> ${esc(d.number)}</span></button>${payment?'':`<button type="button" class="primary revenue-paid-button" data-revenue-paid="${esc(d.id)}">Mark as paid<span class="sr-only"> ${esc(d.number)}</span></button>`}</div></td></tr>`}).join('');
  $('#revenue-'+kind+'-pagination').hidden=rows.length<=limit;$('#revenue-'+kind+'-page').textContent=`${start+1}–${Math.min(start+limit,rows.length)} of ${rows.length}`;
  $('#revenue-'+kind+'-prev').disabled=page<=1;$('#revenue-'+kind+'-next').disabled=page*limit>=rows.length;
 }
@@ -89,6 +90,6 @@ if(typeof document!=='undefined'){
  $('#refresh-revenue').onclick=loadRevenue;
  document.querySelectorAll('[data-revenue-tab]').forEach(button=>{button.onclick=()=>setRevenueTab(button.dataset.revenueTab);button.onkeydown=event=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;event.preventDefault();const tabs=['overview','payments','outstanding'],index=tabs.indexOf(revenueTab),next=event.key==='Home'?'overview':event.key==='End'?'outstanding':tabs[(index+(event.key==='ArrowRight'?1:2))%3];setRevenueTab(next,true)}});
  for(const kind of ['payments','outstanding'])for(const direction of ['prev','next'])$('#revenue-'+kind+'-'+direction).onclick=()=>{revenuePages[kind]+=direction==='next'?1:-1;renderRevenueList(kind);$('#revenue-tab-'+kind).focus()};
- $('#revenue').addEventListener('click',event=>{const button=event.target.closest('[data-revenue-open]');if(button)openRevenueDocument(button.dataset.revenueOpen)});
+ $('#revenue').addEventListener('click',event=>{const paid=event.target.closest('[data-revenue-paid]');if(paid){openRevenuePayment(paid.dataset.revenuePaid);return}const button=event.target.closest('[data-revenue-open]');if(button)openRevenueDocument(button.dataset.revenueOpen)});
  if(typeof ResizeObserver!=='undefined'){let width=0;new ResizeObserver(entries=>{const next=Math.floor(entries[0].contentRect.width);if(next>0&&next!==width){width=next;if(revenueTab==='overview'&&revenueReport&&!$('#revenue').hidden)renderRevenueOverview()}}).observe($('#revenue-chart'))}
 }

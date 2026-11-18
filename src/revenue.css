@@ -42,6 +42,11 @@
 #revenue .revenue-document strong{font-size:13px;font-weight:500;display:block}
 #revenue .revenue-document span{display:block;color:var(--revenue-muted);font-size:11px;margin-top:5px}
 #revenue .revenue-row-action{text-align:right}
+#revenue .revenue-row-buttons{display:flex;justify-content:flex-end;gap:8px;align-items:center}
+#revenue #revenue-outstanding-table th:first-child{width:29%}
+#revenue #revenue-outstanding-table th:last-child{width:190px}
+#revenue .revenue-paid-button{background:var(--revenue-sage);color:#20271d;white-space:nowrap}
+#revenue .revenue-paid-button:hover{background:#cad7b5}
 #revenue .revenue-table .revenue-row-action button{padding:8px 12px}
 #revenue .revenue-pagination{display:flex;align-items:center;justify-content:flex-end;gap:18px;margin-top:24px;color:var(--revenue-muted);font-size:12px}
 #revenue .revenue-message{font-size:12px;color:var(--revenue-muted);line-height:1.6;margin:0 0 18px}
@@ -50,4 +55,19 @@
 #revenue .revenue-monthly-table th:first-child{width:auto}
 #revenue .revenue-monthly-table td,#revenue .revenue-monthly-table th:not(:first-child){text-align:right;font-variant-numeric:tabular-nums}
 @media(max-width:800px){#revenue .revenue-summary{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}#revenue .revenue-controls label{min-width:140px}#revenue .revenue-controls button{margin-left:auto}#revenue .revenue-metric strong{font-size:22px}}
+@media(max-width:650px){#revenue #revenue-outstanding-table .revenue-document{padding-right:0}#revenue #revenue-outstanding-table .revenue-row-action{position:static;width:100%;padding-top:12px}#revenue #revenue-outstanding-table .revenue-paid-button{flex:1;min-height:48px}#revenue #revenue-outstanding-table .revenue-row-buttons>.secondary{min-height:48px;min-width:72px}}
+.revenue-payment-dialog{width:calc(100% - 32px);max-width:440px;padding:24px;border:1px solid #4f443a;border-radius:18px;background:#302923;color:#f0e9e0;color-scheme:dark}
+.revenue-payment-dialog::backdrop{background:#100d0bc9}
+.revenue-payment-dialog h2{margin:0 0 20px;font-size:22px;font-weight:400;letter-spacing:-.5px}
+.revenue-payment-dialog #revenue-payment-name{margin:0 0 5px;font-size:15px;overflow-wrap:anywhere}
+.revenue-payment-dialog #revenue-payment-number{font-size:12px;color:#bdb0a2;margin:0}
+.revenue-payment-balance{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;border-top:1px solid #4f443a;border-bottom:1px solid #4f443a;padding:20px 0;margin:22px 0}
+.revenue-payment-balance span{font-size:12px;color:#bdb0a2}
+.revenue-payment-balance strong{font-size:22px;font-weight:500;max-width:100%;overflow-wrap:anywhere}
+.revenue-payment-actions{display:flex;justify-content:flex-end;gap:10px}
+.revenue-payment-dialog button{min-height:48px;border-radius:12px;font-size:13px}
+.revenue-payment-dialog .primary{background:#bfcea8;color:#20271d}
+.revenue-payment-dialog .secondary{background:#29231f;border-color:#4f443a;color:#f0e9e0}
+.revenue-payment-dialog button:disabled{opacity:.5;cursor:default}
+.revenue-payment-dialog #revenue-payment-error{font-size:13px;line-height:1.6;color:#f0b0a3}
 @media(max-width:650px){#revenue .revenue-summary{grid-template-columns:1fr;gap:18px}#revenue .revenue-metric{display:grid;grid-template-columns:1fr auto;align-items:center;gap:4px 12px}#revenue .revenue-metric small{grid-column:1/-1}#revenue input,#revenue select{font-size:16px}#revenue .revenue-tabs{gap:18px}#revenue .revenue-tabs button{font-size:12px;gap:5px}#revenue .revenue-chart-card{padding:18px 14px}#revenue .revenue-chart-heading{flex-direction:column;align-items:flex-start}#revenue .revenue-legend{gap:15px}#revenue .revenue-records-table,#revenue .revenue-records-table tbody,#revenue .revenue-records-table tr,#revenue .revenue-records-table td{display:block;width:100%}#revenue .revenue-records-table thead{display:none}#revenue .revenue-records-table tr{position:relative;padding:16px 0;border-bottom:1px solid var(--revenue-line)}#revenue .revenue-records-table td{border:0;padding:5px 0}#revenue .revenue-records-table .revenue-document{padding-right:80px;padding-bottom:12px}#revenue .revenue-records-table td[data-label]{display:flex;justify-content:space-between;gap:16px;font-size:12px}#revenue .revenue-records-table td[data-label]:before{content:attr(data-label);color:var(--revenue-muted);text-align:left}#revenue .revenue-records-table .revenue-row-action{position:absolute;top:12px;right:0;width:auto}#revenue .revenue-monthly-table th,#revenue .revenue-monthly-table td{padding:12px 5px;font-size:11px}#revenue .revenue-pagination{justify-content:space-between;gap:8px}}

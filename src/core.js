@@ -9,7 +9,15 @@
   return JSON.stringify(stable({...Object.fromEntries(keys.map(key=>[key,d[key]])),shippingCost:d.shippingCost??0,setupChargeRate:d.setupChargeRate??null,sourceInvoice:d.sourceInvoice||null,orderId:d.orderId||null,items:d.items?.map(item=>({productId:item.productId||null,description:item.description,qty:item.qty,price:item.price}))}));
  }
  function sameDocumentContent(a,b){return !!a&&!!b&&documentContent(a)===documentContent(b)}
- const api={round,totals,validate,sameDocumentContent};root.InvoiceCore=api;if(typeof module!=='undefined')module.exports=api;
+ function invoicePayments(invoice,documents=[],payments=[]){
+  const total=totals(invoice),direct=total.paid;
+  const linked=documents.filter(d=>d.status==='confirmed'&&d.type==='receipt'&&d.sourceInvoice===invoice.id&&d.currency===invoice.currency).reduce((sum,d)=>sum+totals(d).paid,0);
+  const seen=new Set();let recorded=0;
+  for(const payment of payments){if(payment.invoice_id!==invoice.id||payment.currency!==invoice.currency||typeof payment.id!=='string'||seen.has(payment.id)||!Number.isSafeInteger(payment.amount_cents)||payment.amount_cents<=0)continue;seen.add(payment.id);recorded+=payment.amount_cents}
+  return {direct,linked,recorded,paid:direct+linked+recorded,balance:Math.max(0,total.total-direct-linked-recorded)};
+ }
+ function displayTotals(d){const result=totals(d);if(d.type==='invoice'&&Number.isFinite(d.recordedPaid)&&d.recordedPaid>0){result.paid+=round(d.recordedPaid);result.balance=result.total-result.paid}return result}
+ const api={round,totals,displayTotals,invoicePayments,validate,sameDocumentContent};root.InvoiceCore=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof window!=='undefined'?window:globalThis);
 (function(root){
  const api=root.InvoiceCore,oldValidate=api.validate;

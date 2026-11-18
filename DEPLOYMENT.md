@@ -86,6 +86,14 @@ Revenue keeps Sales, Collected and Outstanding above Overview, Payments and Outs
 
 The new private asset `src/revenue.css` is included by the existing Vercel configuration. No database migration or environment changes are needed. Run `npm run test:revenue` for isolated calculations, filtering, tabs, pagination, refresh failures, document navigation and private-asset checks. These checks do not write to Supabase.
 
+### Mark invoice as paid
+
+Apply `supabase/004-invoice-payments.sql` before deploying the payment action. It has already been applied to the configured project. No environment variables change. The private `src/revenue-payments.js` asset uses the existing authenticated inventory API, workspace membership and CSRF checks.
+
+Outstanding invoices offer Open and Mark as paid. Confirmation records only the remaining balance in a private payment ledger, dated in Asia/Kuala_Lumpur. Existing direct payments and linked receipts retain their dates. The transaction checks the current revision and balance, supports safe retries, and updates invoice revision without touching stock, document counters or receipt records. Invoice previews/PDFs include the resulting paid balance. Cancelled/deleted invoices remain excluded from revenue; payment history is retained.
+
+`npm run test:revenue` covers reports, preview/PDF totals, client retry/conflict behavior and authentication. `npm run test:payments:db` checks actual database transactions, retries, stale requests, currency changes and unchanged stock using fixtures rolled back at completion. Desktop and 320/390 px layouts were checked with fictional records in an isolated preview.
+
 ## Business settings tabs
 
 Business details, Logo and Document defaults share one Save changes action. Tab switching and page navigation preserve unsaved edits in memory; a browser refresh clears them. Logo selection/removal is staged until Save changes succeeds. Validation opens the section containing the invalid field. Shared settings use revision checks, preserve edits on failure and reuse the request identifier for an unchanged retry. Saved invoices/receipts keep their original business snapshot, and linked orders keep their quoted setup rate.
