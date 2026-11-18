@@ -80,6 +80,14 @@ The editor uses the shared chocolate palette, a compact business profile and Cus
 
 Private assets `src/editor.js` and `src/editor.css` are included by the existing Vercel configuration. No database migration or environment changes are needed. Run `npm run test:editor` for live totals, stock-label refresh, quoted-price protection, disclosure state, private assets and the existing save/retry checks. Invoice and receipt confirmation, both currencies, adjustments and 320/390 px layouts can be checked against the isolated sample-data preview without writing to Supabase.
 
+## Compact public order form
+
+The existing `/order` page uses compact product rows, photo previews, touch quantity controls, expandable customer/delivery details and a sticky estimated-total action. Continue opens the required details when incomplete; completed orders receive a review screen before Submit order. Editing retains quantities and customer fields in memory. Pickup preserves the address while excluding it from required delivery fields. Nothing is saved to browser storage.
+
+Turnstile starts on the visible review screen. Existing server validation, stock/price checks and submission identifiers remain unchanged. An uncertain submission locks editing and retries the exact order under the same identifier. Security-check retry remains usable. No database migration, new environment variables or separate deployment are needed.
+
+Run `npm run test:order-form` for isolated client flow, retry, validation, verification and route security checks. Desktop and 320/390 px layouts, photos, retained delivery details and failure/retry success were checked using fictional records without database writes. Verify the software keyboard and safe areas on a physical iPhone after deployment.
+
 ## Revenue section tabs
 
 Revenue keeps Sales, Collected and Outstanding above Overview, Payments and Outstanding tabs. Period presets and custom dates share the same currency filter across all views. Payments use payment dates (or issue dates when absent); outstanding invoices use issue dates and their current balance after all confirmed linked receipts. Draft, cancelled, legacy and local-only records are excluded. Linked receipts add collections, not another sale. Lists show twenty records per page and open the existing saved document with protection for unfinished edits. The chart also offers an exact monthly totals table.
